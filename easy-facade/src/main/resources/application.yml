@@ -1,0 +1,64 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+# 加密参数配置
+jasypt:
+  encryptor:
+    algorithm: PBEWITHHMACSHA512ANDAES_256
+    password: X7m2#q4nMjx5kUeW
+
+spring:
+  main:
+    allow-circular-references: true
+  profiles:
+    active: dev
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+  application:
+    name: free-springboot
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      enabled: true
+      max-request-size: 1024MB
+# Mybatis Plus配置
+mybatis-plus:
+  typeAliasesPackage: com.free
+  mapper-locations: classpath*:mapper/*Mapper.xml
+  #枚举扫描
+  typeEnumsPackage: com.easy.**.enums
+  check-config-location: true
+  configuration:
+    #Mybatis二级缓存
+    cache-enabled: false
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+    call-setters-on-nulls: true
+  global-config:
+    db-config:
+      #主键类型 雪花算法
+      id-type: AUTO
+    #关闭banner
+    banner: false
+
+# knife4j 接口文档配置
+knife4j:
+  #是否开启Knife4j增强模式
+  enable: true
+  #是否开启一个默认的跨域配置,该功能配合自定义Host使用
+  cors: false
+  production: false
+
+# 白名单
+whitelist:
+  ignoreUrl:
+    - /test/**
+    - /user/register
+    - /oauth/**
+    - /druid/**

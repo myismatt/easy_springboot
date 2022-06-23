@@ -1,0 +1,129 @@
+package com.easy.facade.framework.security;
+
+import com.easy.facade.annotation.IgnoreAuth;
+import com.easy.facade.config.WhitelistProperties;
+import com.easy.utils.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import java.util.Map;
+
+/**
+ * security配置
+ * </p>
+ *
+ * @Author Matt
+ * @Date 2022/6/16 16:43
+ */
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+    /**
+     * 授权白名单
+     */
+    private final WhitelistProperties whitelistProperties;
+
+    private final RequestMappingHandlerMapping requestMappingHandlerMapping;
+
+    public SecurityConfig(WhitelistProperties whitelistProperties, RequestMappingHandlerMapping requestMappingHandlerMapping) {
+        this.whitelistProperties = whitelistProperties;
+        this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+    }
+
+    /**
+     * 认证管理器
+     * OAUTH2 认证服务器会使用这个
+     */
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+
+    /**
+     * 配置放行
+     */
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        // 忽略URL
+        WebSecurity and = web.ignoring().and();
+        and.ignoring().antMatchers("/**/*.js", "/lang/*.json", "/**/*.css", "/**/*.js", "/**/*.map", "/**/*.html", "/**/*.png",
+                        "/**/*.ico", "/**/*.jpg")
+                // swagger druid
+                .antMatchers("/favicon.ico", "/doc.html", "/druid/*", "/swagger**/**", "/v2/**", "/v3/**");
+        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
+        handlerMethods.forEach((info, method) -> {
+            // 带IgnoreAuth注解的方法直接放行
+            if (StringUtils.isNotNull(method.getMethodAnnotation(IgnoreAuth.class))) {
+                // 根据请求类型做不同的处理
+                info.getMethodsCondition().getMethods().forEach(requestMethod -> {
+                    switch (requestMethod) {
+                        case GET:
+                            // getPatternsCondition得到请求url数组，遍历处理
+                            info.getPatternsCondition().getPatterns().forEach(pattern -> {
+                                and.ignoring().antMatchers(HttpMethod.GET, pattern);
+                            });
+                            break;
+                        case POST:
+                            info.getPatternsCondition().getPatterns().forEach(pattern -> {
+                                and.ignoring().antMatchers(HttpMethod.POST, pattern);
+                            });
+                            break;
+                        case DELETE:
+                            info.getPatternsCondition().getPatterns().forEach(pattern -> {
+                                and.ignoring().antMatchers(HttpMethod.DELETE, pattern);
+                            });
+                            break;
+                        case PUT:
+                            info.getPatternsCondition().getPatterns().forEach(pattern -> {
+                                and.ignoring().antMatchers(HttpMethod.PUT, pattern);
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            }
+        });
+    }
+
+
+    /**
+     * 密码配置
+     */
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * 跨域配置
+     *
+     * @return 基于URL的跨域配置信息
+     */
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // 注册跨域配置
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
+    }
+}
