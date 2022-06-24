@@ -68,12 +68,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!--oauth-->
-        <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-        </dependency>
-
         <!--参数校验-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

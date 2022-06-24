@@ -26,7 +26,7 @@ public class ResponseUtils {
      * @param message  信息内容
      * @throws IOException 抛出异常，由调用者捕获处理
      */
-    public static void write(HttpServletResponse response, String message) throws IOException {
+    public static void writeHtml(HttpServletResponse response, String message) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter writer = response.getWriter();) {
             writer.write(message);
@@ -41,7 +41,7 @@ public class ResponseUtils {
      * @param message  输出对象
      * @throws IOException 抛出异常，由调用者捕获处理
      */
-    public static void write(HttpServletResponse response, Object message) throws IOException {
+    public static void writeJson(HttpServletResponse response, Object message) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
         try (PrintWriter writer = response.getWriter();) {
             writer.write(FastJsonUtils.objectToJson(message));

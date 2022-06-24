@@ -34,7 +34,7 @@ public class ApplicationConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         // 允许跨域的域名，可以用*表示允许任何域名使用
-                        .allowedOrigins("*")
+                        .allowedOriginPatterns("*")
                         // 允许任何方法（post、get等）
                         .allowedMethods("*")
                         // 允许任何请求头

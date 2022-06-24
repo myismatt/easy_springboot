@@ -37,7 +37,6 @@
         <junit.version>4.13.2</junit.version>
         <test.version>2.7.0</test.version>
         <disruptor.version>3.4.4</disruptor.version>
-        <oauth2.version>2.6.8</oauth2.version>
     </properties>
 
     <dependencyManagement>
@@ -49,13 +48,6 @@
                 <type>pom</type>
                 <scope>import</scope>
                 <version>${spring.boot.version}</version>
-            </dependency>
-
-            <!--oauth-->
-            <dependency>
-                <groupId>org.springframework.security.oauth.boot</groupId>
-                <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-                <version>${oauth2.version}</version>
             </dependency>
 
             <!--mysql-->

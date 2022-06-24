@@ -1,0 +1,91 @@
+package com.easy.facade.framework.security;
+
+import com.easy.facade.beans.base.ResultBean;
+import com.easy.facade.beans.entity.LoginUserDetails;
+import com.easy.facade.config.WhitelistProperties;
+import com.easy.facade.enums.HttpStatus;
+import com.easy.utils.io.ResponseUtils;
+import com.easy.utils.jwt.JwtUtils;
+import com.easy.utils.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * @Description: token过滤器 验证token有效性
+ * @ClassName: JwtAuthenticationTokenFilter
+ * @Author: Matt
+ * @Date: 2021/8/4 10:55
+ */
+@Component
+public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+
+    private WhitelistProperties whitelistProperties;
+
+    @Autowired
+    public void setWhitelistProperties(WhitelistProperties whitelistProperties) {
+        this.whitelistProperties = whitelistProperties;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+        // 获取请求地址
+        String requestUrl = request.getRequestURI();
+        // 放行接口不校验token
+        for (String url : whitelistProperties.getIgnoreUrl()) {
+            // 模糊匹配单独处理
+            if (url.endsWith("/**") || url.endsWith("/*")) {
+                if (requestUrl.startsWith(url.replace("/**", ""))) {
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
+            else {
+                if (requestUrl.equals(url)) {
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
+        }
+        // 获取token
+        String token = SecurityUtils.getToken(request);
+        // 未登录
+        if (StringUtils.isEmpty(token)) {
+            chain.doFilter(request, response);
+            return;
+        }
+        // 校验token合法性
+        if (!JwtUtils.verify(token)) {
+            ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.TOKEN_EXCEPTION));
+            return;
+        }
+        // 验证token是否过期
+        if (JwtUtils.isExpired(token)) {
+            ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.TOKEN_EXPIRED));
+            return;
+        }
+        // 获取用户信息
+        LoginUserDetails loginUser = SecurityUtils.getLoginUserInfoFromToken(token);
+        if (StringUtils.isNotNull(loginUser) && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        }
+        else {
+            ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.TOKEN_EXCEPTION));
+            return;
+        }
+        chain.doFilter(request, response);
+    }
+}

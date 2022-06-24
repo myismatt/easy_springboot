@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -39,17 +41,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 授权白名单
      */
     private final WhitelistProperties whitelistProperties;
+    private final EasyAuthenticationProvider authenticationProvider;
+    private final EasyAuthenticationEntryPoint authenticationEntryPoint;
+    private final EasyAccessDeniedHandler accessDeniedHandler;
 
     private final RequestMappingHandlerMapping requestMappingHandlerMapping;
 
-    public SecurityConfig(WhitelistProperties whitelistProperties, RequestMappingHandlerMapping requestMappingHandlerMapping) {
+    public SecurityConfig(WhitelistProperties whitelistProperties, EasyAuthenticationProvider authenticationProvider, EasyAuthenticationEntryPoint authenticationEntryPoint, EasyAccessDeniedHandler accessDeniedHandler, RequestMappingHandlerMapping requestMappingHandlerMapping) {
         this.whitelistProperties = whitelistProperties;
+        this.authenticationProvider = authenticationProvider;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
     }
 
     /**
      * 认证管理器
-     * OAUTH2 认证服务器会使用这个
      */
     @Bean
     @Override
@@ -57,6 +64,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        // 允许用户使用HTTP基本身份验证进行身份验证
+        http.httpBasic()
+                // 禁用 csrf
+                .and().csrf().disable()
+                // 关闭session
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // 白名单
+        for (String ignoreUrl : whitelistProperties.getIgnoreUrl()) {
+            http.authorizeRequests().antMatchers(ignoreUrl).permitAll();
+        }
+        // 打印白名单日志
+        logger.info("URL WHITELIST:{}", whitelistProperties.getIgnoreUrl().toString());
+        // 权限配置
+        http.authorizeRequests()
+                // 跨域预检请求
+                .antMatchers(HttpMethod.OPTIONS, "/**").denyAll()
+                // 其他所有请求需要身份认证
+                .anyRequest().authenticated();
+
+        // 权限不足处理
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                // 认证异常处理
+                .authenticationEntryPoint(authenticationEntryPoint);
+
+        // 禁用缓存
+        http.headers().frameOptions().disable().cacheControl();
+    }
 
     /**
      * 配置放行
@@ -66,9 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 忽略URL
         WebSecurity and = web.ignoring().and();
         and.ignoring().antMatchers("/**/*.js", "/lang/*.json", "/**/*.css", "/**/*.js", "/**/*.map", "/**/*.html", "/**/*.png",
-                        "/**/*.ico", "/**/*.jpg")
-                // swagger druid
-                .antMatchers("/favicon.ico", "/doc.html", "/druid/*", "/swagger**/**", "/v2/**", "/v3/**");
+                "/**/*.ico", "/**/*.jpg", "/favicon.ico", "/doc.html", "/webjars/**", "/druid/*", "/swagger**/**", "/v2/**", "/v3/**");
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
         handlerMethods.forEach((info, method) -> {
             // 带IgnoreAuth注解的方法直接放行

@@ -19,7 +19,10 @@ public enum HttpStatus implements IEnum<Integer> {
     ERROR(HttpCode.ERROR, "错误"),
     UNAUTHORIZED(HttpCode.UNAUTHORIZED, "无权访问"),
     FORBIDDEN(HttpCode.FORBIDDEN, "禁止访问"),
-    UNKNOWN_EXCEPTION(HttpCode.ERROR, "未知异常");
+    UNKNOWN_EXCEPTION(HttpCode.ERROR, "未知异常"),
+    TOKEN_EXCEPTION(HttpCode.ERROR, "签名异常"),
+    TOKEN_EXPIRED(HttpCode.FORBIDDEN, "签名过期,禁止访问"),
+    ;
 
     private final Integer value;
     private final String reasonPhrase;

@@ -58,7 +58,9 @@ knife4j:
 # 白名单
 whitelist:
   ignoreUrl:
+    - /doc.html
+    - /webjars/**
     - /test/**
     - /user/register
-    - /oauth/**
+    - /login
     - /druid/**

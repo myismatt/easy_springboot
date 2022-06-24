@@ -2,6 +2,7 @@ package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.enums.HttpStatus;
+import com.easy.utils.io.ResponseUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -22,10 +23,6 @@ import java.io.IOException;
 public class EasyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        // 设置编码格式
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
-        response.getWriter().println(ResultBean.custom(HttpStatus.FORBIDDEN));
-        response.getWriter().flush();
+        ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.FORBIDDEN));
     }
 }

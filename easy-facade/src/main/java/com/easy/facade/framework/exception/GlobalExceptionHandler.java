@@ -48,10 +48,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 自定义
-     *
-     * @param e 异常
-     * @return message
+     * 自定义异常
      */
     @ExceptionHandler(value = CustomException.class)
     public ResultBean<String> handleCustom(CustomException e) {
