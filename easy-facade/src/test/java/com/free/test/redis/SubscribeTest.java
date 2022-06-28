@@ -1,6 +1,6 @@
 package com.free.test.redis;
 
-import com.easy.facade.FreeStartApplication;
+import com.easy.facade.EasyStartApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * @Date 2022/6/21 14:21
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {FreeStartApplication.class})
+@SpringBootTest(classes = {EasyStartApplication.class})
 public class SubscribeTest {
 
     @Resource

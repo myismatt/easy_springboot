@@ -1,6 +1,6 @@
 package com.free.test.mail;
 
-import com.easy.facade.FreeStartApplication;
+import com.easy.facade.EasyStartApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender;
  * @Author Matt
  * @Date 2022/6/21 10:04
  */
-@SpringBootTest(classes = {FreeStartApplication.class})
+@SpringBootTest(classes = {EasyStartApplication.class})
 public class SpringbootApplicationTest {
 
     @Autowired
