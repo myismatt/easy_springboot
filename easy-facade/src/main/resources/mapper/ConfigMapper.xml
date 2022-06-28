@@ -15,7 +15,36 @@
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, config_name, config_key, config_value, config_type, create_time, update_time,
+        id,
+        config_name,
+        config_key,
+        config_value,
+        config_type,
+        create_time,
+        update_time,
         remark
     </sql>
+
+    <select id="selectConfigVO" resultType="com.easy.facade.beans.vo.ConfigVO">
+        SELECT id AS id,
+        config_name AS configName,
+        config_key AS configKey,
+        config_value AS configValue,
+        config_type AS configType,
+        create_time AS createTime,
+        update_time AS updateTime,
+        remark AS remark
+        FROM easy_config
+        <where>
+            <if test="dto.configName != null and dto.configName != ''">
+                and config_name = #{dto.configName}
+            </if>
+            <if test="dto.configKey != null and dto.configKey != ''">
+                AND config_key = #{dto.configKey}
+            </if>
+            <if test="dto.configType != null">
+                AND config_type = #{dto.configType}
+            </if>
+        </where>
+    </select>
 </mapper>

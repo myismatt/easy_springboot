@@ -18,6 +18,11 @@ public final class RedisKey {
      */
     public final static String TOKEN_USERINFO_KEY = "user_key:";
 
+    /**
+     * 配置参数缓存键
+     */
+    public static final String CONFIG_LIST_KEY = "config_list_key:";
+
     private RedisKey() {
         throw new IllegalAccessError("RedisKey.class");
     }

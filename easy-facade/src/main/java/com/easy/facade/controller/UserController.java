@@ -6,7 +6,6 @@ import com.easy.facade.framework.exception.CustomException;
 import com.easy.facade.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +25,12 @@ import javax.validation.Valid;
 @Api(tags = "用户信息管理")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
+
 
     @PostMapping("register")
     @ApiOperation("注册账号")

@@ -70,7 +70,7 @@ public class RedisUtils {
      * @return true=设置成功；false=设置失败
      */
     public boolean expire(final String key, final long timeout, final TimeUnit unit) {
-        return Boolean.TRUE.equals(redisTemplate.expire(key, timeout, unit));
+        return redisTemplate.expire(key, timeout, unit);
     }
 
     /**
@@ -79,8 +79,8 @@ public class RedisUtils {
      * @param key 缓存键值
      * @return 缓存键值对应的数据
      */
-    public Object getCacheObject(final String key) {
-        ValueOperations<String, Object> operation = redisTemplate.opsForValue();
+    public <T> T getCacheObject(final String key) {
+        ValueOperations<String, T> operation = (ValueOperations<String, T>) redisTemplate.opsForValue();
         return operation.get(key);
     }
 
@@ -90,24 +90,24 @@ public class RedisUtils {
      * @param key
      */
     public boolean deleteObject(final String key) {
-        return Boolean.TRUE.equals(redisTemplate.delete(key));
+        return redisTemplate.delete(key);
     }
 
     /**
      * 删除集合对象
      *
      * @param collection 多个对象
-     * @return long
+     * @return
      */
-    public long deleteObject(final Collection<String> collection) {
+    public long deleteObject(final Collection collection) {
         return redisTemplate.delete(collection);
     }
 
     /**
      * 缓存List数据
      *
-     * @param key      缓存的键值
-     * @param dataList 待缓存的List数据
+     * @param key    缓存的键值
+     * @param values 待缓存的List数据
      * @return 缓存的对象
      */
     public <T> long setCacheList(final String key, final List<T> dataList) {
@@ -121,8 +121,8 @@ public class RedisUtils {
      * @param key 缓存的键值
      * @return 缓存键值对应的数据
      */
-    public List<Object> getCacheList(final String key) {
-        return redisTemplate.opsForList().range(key, 0, -1);
+    public <T> List<T> getCacheList(final String key) {
+        return (List<T>) redisTemplate.opsForList().range(key, 0, -1);
     }
 
     /**
@@ -132,9 +132,9 @@ public class RedisUtils {
      * @param dataSet 缓存的数据
      * @return 缓存数据的对象
      */
-    public BoundSetOperations<String, Object> setCacheSet(final String key, final Set<Object> dataSet) {
-        BoundSetOperations<String, Object> setOperation = redisTemplate.boundSetOps(key);
-        for (Object t : dataSet) {
+    public <T> BoundSetOperations<String, T> setCacheSet(final String key, final Set<T> dataSet) {
+        BoundSetOperations<String, T> setOperation = (BoundSetOperations<String, T>) redisTemplate.boundSetOps(key);
+        for (T t : dataSet) {
             setOperation.add(t);
         }
         return setOperation;
@@ -146,8 +146,8 @@ public class RedisUtils {
      * @param key
      * @return
      */
-    public Set<Object> getCacheSet(final String key) {
-        return redisTemplate.opsForSet().members(key);
+    public <T> Set<T> getCacheSet(final String key) {
+        return (Set<T>) redisTemplate.opsForSet().members(key);
     }
 
     /**
@@ -168,7 +168,7 @@ public class RedisUtils {
      * @param key
      * @return
      */
-    public Map<Object, Object> getCacheMap(final String key) {
+    public <T> Map<Object, Object> getCacheMap(final String key) {
         return redisTemplate.opsForHash().entries(key);
     }
 
@@ -190,8 +190,8 @@ public class RedisUtils {
      * @param hKey Hash键
      * @return Hash中的对象
      */
-    public Object getCacheMapValue(final String key, final String hKey) {
-        HashOperations<String, String, Object> opsForHash = redisTemplate.opsForHash();
+    public <T> T getCacheMapValue(final String key, final String hKey) {
+        HashOperations<String, String, T> opsForHash = redisTemplate.opsForHash();
         return opsForHash.get(key, hKey);
     }
 
@@ -202,8 +202,8 @@ public class RedisUtils {
      * @param hKeys Hash键集合
      * @return Hash对象集合
      */
-    public List<Object> getMultiCacheMapValue(final String key, final Collection<Object> hKeys) {
-        return redisTemplate.opsForHash().multiGet(key, hKeys);
+    public <T> List<T> getMultiCacheMapValue(final String key, final Collection<Object> hKeys) {
+        return (List<T>) redisTemplate.opsForHash().multiGet(key, hKeys);
     }
 
     /**
@@ -215,7 +215,6 @@ public class RedisUtils {
     public Collection<String> keys(final String pattern) {
         return redisTemplate.keys(pattern);
     }
-
 
     /**
      * 发布订阅消息

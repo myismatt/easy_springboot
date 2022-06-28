@@ -12,7 +12,6 @@ import com.easy.utils.io.ResponseUtils;
 import com.easy.utils.json.FastJsonUtils;
 import com.easy.utils.jwt.JwtUtils;
 import com.easy.utils.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -35,16 +34,13 @@ import java.io.IOException;
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final RedisUtils redisUtils;
-    private WhitelistProperties whitelistProperties;
+    private final WhitelistProperties whitelistProperties;
 
-    public JwtAuthenticationTokenFilter(RedisUtils redisUtils) {
+    public JwtAuthenticationTokenFilter(RedisUtils redisUtils, WhitelistProperties whitelistProperties) {
         this.redisUtils = redisUtils;
-    }
-
-    @Autowired
-    public void setWhitelistProperties(WhitelistProperties whitelistProperties) {
         this.whitelistProperties = whitelistProperties;
     }
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
