@@ -147,13 +147,11 @@ public class IdUtils {
     }
 
     /**
-     * 获取五分钟内随机时间 -毫秒
+     * 获取五以内随机数(包含5)
      *
-     * @return Long
+     * @return int
      */
-    public static Long randomFiveMin() {
-        Random random = new Random();
-        return (long) (random.nextInt(300) % (300 - 20 + 1) + 20) * 1000;
+    public static int randomFive() {
+        return (int) (1 + Math.random() * (6 - 1 + 1));
     }
-
 }

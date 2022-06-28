@@ -2,9 +2,14 @@ package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.entity.LoginUserDetails;
+import com.easy.facade.config.KeyConfig;
 import com.easy.facade.config.WhitelistProperties;
+import com.easy.facade.constants.RedisKey;
 import com.easy.facade.enums.HttpStatus;
+import com.easy.facade.framework.redis.RedisUtils;
+import com.easy.utils.encryption.RsaUtils;
 import com.easy.utils.io.ResponseUtils;
+import com.easy.utils.json.FastJsonUtils;
 import com.easy.utils.jwt.JwtUtils;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +26,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @Description: token过滤器 验证token有效性
- * @ClassName: JwtAuthenticationTokenFilter
- * @Author: Matt
- * @Date: 2021/8/4 10:55
+ * token过滤器 验证token有效性
+ *
+ * @Author Matt
+ * @Date 2022年06月28日
  */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
+    private final RedisUtils redisUtils;
     private WhitelistProperties whitelistProperties;
+
+    public JwtAuthenticationTokenFilter(RedisUtils redisUtils) {
+        this.redisUtils = redisUtils;
+    }
 
     @Autowired
     public void setWhitelistProperties(WhitelistProperties whitelistProperties) {
@@ -74,9 +84,19 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.TOKEN_EXPIRED));
             return;
         }
-        // 获取用户信息
-        LoginUserDetails loginUser = SecurityUtils.getLoginUserInfoFromToken(token);
-        if (StringUtils.isNotNull(loginUser) && SecurityContextHolder.getContext().getAuthentication() == null) {
+        // 获取账号唯一标识码
+        String userKey = JwtUtils.getId(token);
+        // 获取缓存中加密的用户信息
+        String userJson = String.valueOf(redisUtils.getCacheObject(RedisKey.TOKEN_USERINFO_KEY + userKey));
+
+        if (StringUtils.isBlank(userJson)) {
+            ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.TOKEN_EXPIRED));
+            return;
+        }
+        // 解密并反序列化缓存信息
+        LoginUserDetails loginUser = FastJsonUtils.jsonToObject(RsaUtils.decrypt(userJson, KeyConfig.getRsaPrivateKey()), LoginUserDetails.class);
+        //
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

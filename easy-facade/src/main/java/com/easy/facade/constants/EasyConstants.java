@@ -19,11 +19,6 @@ public final class EasyConstants {
      */
     public final static String TOKEN_PREFIX = "bearer ";
 
-    /**
-     * token中用户信息map的key
-     */
-    public final static String TOKEN_USERINFO_MAP_KEY = "user";
-
     private EasyConstants() {
         throw new IllegalAccessError("Constants.class");
     }

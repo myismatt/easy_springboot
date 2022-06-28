@@ -32,6 +32,8 @@
         <google-guava.version>31.1-jre</google-guava.version>
         <commons.fileupload.version>1.4</commons.fileupload.version>
         <java-jwt.version>3.19.2</java-jwt.version>
+        <jasypt-spring.version>3.0.4</jasypt-spring.version>
+        <jasypt.version>1.9.3</jasypt.version>
     </properties>
 
     <dependencies>
@@ -123,6 +125,18 @@
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>${java-jwt.version}</version>
+        </dependency>
+
+        <!--参数加解密-->
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>${jasypt-spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+            <version>${jasypt.version}</version>
         </dependency>
 
     </dependencies>

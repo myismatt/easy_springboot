@@ -66,7 +66,7 @@ public class JasyptTest {
 
     public static void main(String[] args) {
         String factor = "X7m2#q4nMjx5kUeW";
-        String plainText = "Dt#FE95utW3D";
+        String plainText = "/a1qXkXuWxm5xHbTdIBw1Jat14br6IocoEZVazsZZFQ2N4bJl9xNXRoe/8EquTgDkduP9v+gpmTgSFgW68kgJjs4cku2R1hGn3SKOPp3o4UAc/uo5Gbdjw1HjsY0vT0j76HhAgMBAAECgYAIqfH03KBCp7oEej0fFLJBG1su9CaT8bSDZore6GPLglUBWmYCgijh6rj8wJ9V2jui+d4hEnUsyS4GOlwt4co00H4C7FLWjPbvvx05sNTaFTPsqRnWEXPXs+dHHq+hH9tgJi5mOOg9S85UiWVYddhy2fUnFkuD1SIzC9FMNGJ0AQJBAL6R+ORyYNNzqHEz+mYL/fTiwSn2m+F6PRrFEhS2avW/W21ICW5dOoSJDCqjgqrDHgIfMhpsGEEOGQq7mPe1GhECQQCskWPakSGPV3chBcXzykW9e3Z4KezyLxwodcXCEYh4pm2H3XXOYsPdoRV4Ns7zLTwI//2n4UUlqTWA3URk1brRAkAhQP+ZfYv/2fLOri9Hl1gdX2QtmmbhFZ+MCE97ZcmMUHP3wdZDd+k6L1/8IMQwYBPgcukfSzWARKGCCfJLZ0LBAkEAqFd8jW8eyfKNKA21uckMl3elbjuYBfmnAmFBdbwc4XWZS/ziO19lqwLFKuxsnhT2h+ER1X+QMNkMdJVlbuiAwQJBALCeDoJSIteFBrNMJWXjLRAevJK+k3Go34oRavMoUi1MPprr8MAlmBtk5AiIJmRdZfjXoVGNBrOF8qBivg/VT/A=";
 
         String encryptWithSHA512Str = encryptWithSHA512(plainText, factor);
         String decryptWithSHA512Str = decryptWithSHA512(encryptWithSHA512Str, factor);

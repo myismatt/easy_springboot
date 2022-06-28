@@ -26,27 +26,12 @@ import java.util.Map;
  */
 public class RsaUtils {
 
-    public static void main(String[] args) {
-        //生成公钥和私钥
-        Map<Integer, String> keyMap = genKeyPair();
-        //加密字符串
-        String content = IdUtils.generate12Code();
-        ;
-        System.out.println("加密前内容:" + content);
-        System.out.println("随机生成的公钥为:" + keyMap.get(0));
-        System.out.println("随机生成的私钥为:" + keyMap.get(1));
-        String messageEn = encrypt(content, keyMap.get(0));
-        System.out.println("加密后的内容为:" + messageEn);
-        String messageDe = decrypt(messageEn, keyMap.get(1));
-        System.out.println("还原后的内容为:" + messageDe);
-    }
-
     /**
      * 随机生成密钥对
      *
-     * @return
+     * @return Map<Integer, String>; 0-公钥;1-私钥;
      */
-    public static Map genKeyPair() {
+    public static Map<Integer, String> genKeyPair() {
         // KeyPairGenerator类用于生成公钥和私钥对，基于RSA算法生成对象
         KeyPairGenerator keyPairGen = null;
         try {
@@ -58,7 +43,7 @@ public class RsaUtils {
 
         // 初始化密钥对生成器，密钥大小为96-1024位
         assert keyPairGen != null;
-        keyPairGen.initialize(1024, new SecureRandom());
+        keyPairGen.initialize(2048, new SecureRandom());
         // 生成一个密钥对，保存在keyPair中
         KeyPair keyPair = keyPairGen.generateKeyPair();
         // 得到私钥
@@ -132,6 +117,21 @@ public class RsaUtils {
             e.printStackTrace();
         }
         return outStr;
+    }
+
+    public static void main(String[] args) {
+        //生成公钥和私钥
+        Map<Integer, String> keyMap = genKeyPair();
+        //加密字符串
+        String content = IdUtils.generate12Code();
+        ;
+        System.out.println("加密前内容:" + content);
+        System.out.println("随机生成的公钥为:" + keyMap.get(0));
+        System.out.println("随机生成的私钥为:" + keyMap.get(1));
+        String messageEn = encrypt(content, keyMap.get(0));
+        System.out.println("加密后的内容为:" + messageEn);
+        String messageDe = decrypt(messageEn, keyMap.get(1));
+        System.out.println("还原后的内容为:" + messageDe);
     }
 
 

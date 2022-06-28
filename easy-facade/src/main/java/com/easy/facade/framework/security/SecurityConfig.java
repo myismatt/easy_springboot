@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,19 +42,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 授权白名单
      */
     private final WhitelistProperties whitelistProperties;
-    private final EasyAuthenticationProvider authenticationProvider;
     private final EasyAuthenticationEntryPoint authenticationEntryPoint;
     private final EasyAccessDeniedHandler accessDeniedHandler;
+    private final JwtAuthenticationTokenFilter authenticationTokenFilter;
 
     private final RequestMappingHandlerMapping requestMappingHandlerMapping;
 
-    public SecurityConfig(WhitelistProperties whitelistProperties, EasyAuthenticationProvider authenticationProvider, EasyAuthenticationEntryPoint authenticationEntryPoint, EasyAccessDeniedHandler accessDeniedHandler, RequestMappingHandlerMapping requestMappingHandlerMapping) {
+    public SecurityConfig(WhitelistProperties whitelistProperties, EasyAuthenticationEntryPoint authenticationEntryPoint, EasyAccessDeniedHandler accessDeniedHandler, JwtAuthenticationTokenFilter authenticationTokenFilter, RequestMappingHandlerMapping requestMappingHandlerMapping) {
         this.whitelistProperties = whitelistProperties;
-        this.authenticationProvider = authenticationProvider;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
+        this.authenticationTokenFilter = authenticationTokenFilter;
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
     }
+
 
     /**
      * 认证管理器
@@ -89,7 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 // 认证异常处理
                 .authenticationEntryPoint(authenticationEntryPoint);
-
+        // 添加JWT filter
+        http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         // 禁用缓存
         http.headers().frameOptions().disable().cacheControl();
     }

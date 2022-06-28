@@ -57,20 +57,21 @@ public class JwtUtils {
     }
 
     /**
-     * 创建token,默认过期时间单位为小时
+     * 创建token,默认过期时间单位为分钟
      *
      * @param iss    token签发者
      * @param sub    token所面向的用户
      * @param aud    接收token的一方
+     * @param jti    唯一标识
      * @param amount 过期时间
      * @return 加密后的token字符串
      */
     public static String generateToken(String iss, String sub, String aud, String jti, int amount) {
-        return generateToken(iss, sub, aud, jti, null, Calendar.HOUR, amount);
+        return generateToken(iss, sub, aud, jti, null, Calendar.MINUTE, amount);
     }
 
     /**
-     * 创建token,默认过期时间单位为小时
+     * 创建token,默认过期时间单位为分钟
      *
      * @param iss    token签发者
      * @param sub    token所面向的用户
@@ -79,7 +80,7 @@ public class JwtUtils {
      * @return 加密后的token字符串
      */
     public static String generateToken(String iss, String sub, String aud, Map<String, Object> map, int amount) {
-        return generateToken(iss, sub, aud, IdUtils.fastSimpleUuid(), map, Calendar.HOUR, amount);
+        return generateToken(iss, sub, aud, IdUtils.fastSimpleUuid(), map, Calendar.MINUTE, amount);
     }
 
 
@@ -202,10 +203,10 @@ public class JwtUtils {
     }
 
     /**
-     * 获取jwt中的Id
+     * 获取jwt中的jti
      *
      * @param token jwt
-     * @return Id
+     * @return jti
      */
     public static String getId(String token) {
         return JWT.decode(token).getId();

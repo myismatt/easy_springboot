@@ -3,7 +3,6 @@ package com.easy.facade.framework.security;
 import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.constants.EasyConstants;
 import com.easy.facade.framework.exception.CustomException;
-import com.easy.utils.jwt.JwtUtils;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,19 +39,6 @@ public class SecurityUtils {
      */
     public static LoginUserDetails getLoginUserInfo() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!(principal instanceof LoginUserDetails)) {
-            throw new CustomException("登录信息获取异常");
-        }
-        return (LoginUserDetails) principal;
-    }
-
-    /**
-     * 获取用户信息
-     *
-     * @return LoginUserDetails
-     */
-    public static LoginUserDetails getLoginUserInfoFromToken(String token) {
-        Object principal = JwtUtils.getMapFromKey(token, EasyConstants.TOKEN_USERINFO_MAP_KEY);
         if (!(principal instanceof LoginUserDetails)) {
             throw new CustomException("登录信息获取异常");
         }

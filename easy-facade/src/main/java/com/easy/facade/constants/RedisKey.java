@@ -13,6 +13,11 @@ public final class RedisKey {
      */
     public final static String EMAIL_ACTIVATION_CODE = "email_activation_code:";
 
+    /**
+     * token中用户信息的key
+     */
+    public final static String TOKEN_USERINFO_KEY = "user_key:";
+
     private RedisKey() {
         throw new IllegalAccessError("RedisKey.class");
     }

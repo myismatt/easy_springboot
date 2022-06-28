@@ -3,13 +3,22 @@ package com.easy.facade.service;
 import com.easy.facade.beans.dto.LoginParamDTO;
 import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.beans.entity.TokenInfo;
+import com.easy.facade.beans.vo.UserInfoVO;
+import com.easy.facade.config.KeyConfig;
+import com.easy.facade.constants.RedisKey;
 import com.easy.facade.framework.redis.RedisUtils;
+import com.easy.facade.framework.security.SecurityUtils;
+import com.easy.utils.encryption.RsaUtils;
 import com.easy.utils.idUtils.IdUtils;
+import com.easy.utils.idUtils.SnowflakeIdUtils;
+import com.easy.utils.json.FastJsonUtils;
 import com.easy.utils.jwt.JwtUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 登录接口
@@ -38,10 +47,22 @@ public class LoginService {
         LoginUserDetails userDetails = (LoginUserDetails) authentication.getPrincipal();
         // 清除密码
         userDetails.setPassword(null);
-        String redisUidKey = IdUtils.generate12Code();
+        // 过期时间+动态数/单位分钟
+        int amount = 480 + IdUtils.randomFive();
+        // 随机码
+        String uid = SnowflakeIdUtils.getInstance().getNextId();
+        // 加密用户信息
+        String userJson = RsaUtils.encrypt(FastJsonUtils.objectToJson(userDetails), KeyConfig.getRsaPublicKey());
+        // 缓存用户信息
+        redisUtils.setCacheObject(RedisKey.TOKEN_USERINFO_KEY + uid, userJson, amount, TimeUnit.MINUTES);
         // 生成 accessToken
-        String accessToken = JwtUtils.generateToken(userDetails.getId(), userDetails.getUsername(), userDetails.getUserKey(), redisUidKey, 8);
-        return new TokenInfo(accessToken, IdUtils.fastSimpleUuid());
+        String accessToken = JwtUtils.generateToken(userDetails.getId(), userDetails.getUsername(), userDetails.getUserKey(), uid, amount);
+        return new TokenInfo(accessToken, uid);
 
+    }
+
+    public UserInfoVO getUserInfo() {
+        LoginUserDetails userDetails = SecurityUtils.getLoginUserInfo();
+        return new UserInfoVO();
     }
 }

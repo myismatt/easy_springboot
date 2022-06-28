@@ -2,7 +2,7 @@ server:
   port: 8080
   servlet:
     context-path: /
-# 加密参数配置
+# 加密参数配置 password不建议设置在这里面,建议打包手动输入另行保存
 jasypt:
   encryptor:
     algorithm: PBEWITHHMACSHA512ANDAES_256
