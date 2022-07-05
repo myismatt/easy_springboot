@@ -21,7 +21,7 @@ public final class RedisKey {
     /**
      * 配置参数缓存键
      */
-    public static final String CONFIG_LIST_KEY = "config_list_key:";
+    public static final String CONFIG_LIST_KEY = "system_config_list_key:";
 
     private RedisKey() {
         throw new IllegalAccessError("RedisKey.class");

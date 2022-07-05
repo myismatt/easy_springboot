@@ -106,8 +106,8 @@ public class RedisUtils {
     /**
      * 缓存List数据
      *
-     * @param key    缓存的键值
-     * @param values 待缓存的List数据
+     * @param key      缓存的键值
+     * @param dataList 待缓存的List数据
      * @return 缓存的对象
      */
     public <T> long setCacheList(final String key, final List<T> dataList) {
@@ -124,6 +124,22 @@ public class RedisUtils {
     public <T> List<T> getCacheList(final String key) {
         return (List<T>) redisTemplate.opsForList().range(key, 0, -1);
     }
+
+    /**
+     * 删除列表中值为value的元素，总共删除count次；
+     * <p>
+     * 如原来列表为 【1， 2， 3， 4， 5， 2， 1， 2， 5】
+     * 传入参数 value=2, count=1 表示删除一个列表中value为2的元素
+     * 则执行后，列表为 【1， 3， 4， 5， 2， 1， 2， 5】
+     *
+     * @param key
+     * @param value
+     * @param count
+     */
+    public void removeList(String key, String value, int count) {
+        redisTemplate.opsForList().remove(key, count, value);
+    }
+
 
     /**
      * 缓存Set

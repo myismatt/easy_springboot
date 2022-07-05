@@ -82,15 +82,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         // 获取账号唯一标识码
         String userKey = JwtUtils.getId(token);
-        // 获取缓存中加密的用户信息
-        String userJson = String.valueOf(redisUtils.getCacheObject(RedisKey.TOKEN_USERINFO_KEY + userKey));
-
-        if (StringUtils.isBlank(userJson)) {
+        // 获取缓存中加密的用户数据
+        String encryptUserString = String.valueOf(redisUtils.getCacheObject(RedisKey.TOKEN_USERINFO_KEY + userKey));
+        // 未获取到用户加密信息则表示登录过期或者被强制下线
+        if (StringUtils.isBlank(encryptUserString)) {
             ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.TOKEN_EXPIRED));
             return;
         }
         // 解密并反序列化缓存信息
-        LoginUserDetails loginUser = FastJsonUtils.jsonToObject(RsaUtils.decrypt(userJson, KeyConfig.getRsaPrivateKey()), LoginUserDetails.class);
+        LoginUserDetails loginUser = FastJsonUtils.jsonToObject(RsaUtils.decrypt(encryptUserString, KeyConfig.getRsaPrivateKey()), LoginUserDetails.class);
         //
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken authenticationToken =

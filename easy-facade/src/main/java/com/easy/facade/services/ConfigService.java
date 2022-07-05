@@ -3,7 +3,6 @@ package com.easy.facade.services;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.ConfigDTO;
 import com.easy.facade.beans.dto.ConfigSearchDTO;
 import com.easy.facade.beans.model.Config;
@@ -12,12 +11,16 @@ import com.easy.facade.constants.RedisKey;
 import com.easy.facade.dao.ConfigMapper;
 import com.easy.facade.enums.YesOrNoEnum;
 import com.easy.facade.framework.redis.RedisUtils;
+import com.easy.facade.utils.ConfigUtils;
+import com.easy.utils.bean.BeanUtils;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 参数配置
@@ -52,7 +55,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
         dto.setConfigType(YesOrNoEnum.YES);
         List<ConfigVO> list = this.baseMapper.selectConfigVO(dto);
         if (StringUtils.isNotNull(list)) {
-            redisUtils.setCacheList(RedisKey.CONFIG_LIST_KEY, list);
+            ConfigUtils.setConfigList(list);
         }
     }
 
@@ -72,13 +75,11 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      * @param dto 查询入参
      * @return IPage<Config>
      */
-    public ResultBean<IPage<Config>> pageConfig(ConfigSearchDTO dto) {
-        IPage<Config> page =
-                lambdaQuery().eq(StringUtils.isNotBlank(dto.getConfigName()), Config::getConfigName, dto.getConfigName())
-                        .eq(StringUtils.isNotBlank(dto.getConfigKey()), Config::getConfigKey, dto.getConfigKey())
-                        .eq(StringUtils.isNotNull(dto.getConfigType()), Config::getConfigType, dto.getConfigType())
-                        .page(new Page<Config>().setCurrent(dto.getCurrent()).setSize(dto.getSize()));
-        return ResultBean.success(page);
+    public IPage<Config> pageConfig(ConfigSearchDTO dto) {
+        return lambdaQuery().eq(StringUtils.isNotBlank(dto.getConfigName()), Config::getConfigName, dto.getConfigName())
+                .eq(StringUtils.isNotBlank(dto.getConfigKey()), Config::getConfigKey, dto.getConfigKey())
+                .eq(StringUtils.isNotNull(dto.getConfigType()), Config::getConfigType, dto.getConfigType())
+                .page(new Page<Config>().setCurrent(dto.getCurrent()).setSize(dto.getSize()));
     }
 
     /**
@@ -87,19 +88,17 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      * @param dto 入参
      * @return 操作结果
      */
-    public ResultBean<String> addConfig(ConfigDTO dto) {
+    public void addConfig(ConfigDTO dto) {
         Config newConfig = new Config();
-        newConfig.setConfigName(dto.getConfigName());
-        newConfig.setConfigKey(dto.getConfigKey());
-        newConfig.setConfigValue(dto.getConfigValue());
-        newConfig.setConfigType(dto.getConfigType());
-        newConfig.setRemark(dto.getRemark());
+        BeanUtils.populate(dto, newConfig);
         this.save(newConfig);
-        // 更新系统参数缓存
+        // 如果是系统缓存
         if (dto.getConfigType().equals(YesOrNoEnum.YES)) {
-            configInitCache();
+            // 增加缓存
+            ConfigVO cache = new ConfigVO();
+            BeanUtils.populate(newConfig, cache);
+            ConfigUtils.addConfigList(cache);
         }
-        return ResultBean.success();
     }
 
     /**
@@ -108,9 +107,12 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      * @param config 入参
      * @return 操作结果
      */
-    public ResultBean<String> updateConfig(Config config) {
+    @Transactional(rollbackFor = Exception.class)
+    public void updateConfig(Config config) {
+        if (config.getConfigType().equals(YesOrNoEnum.YES)) {
+            // TODO
+        }
         this.updateById(config);
-        return ResultBean.success();
     }
 
     /**
@@ -119,9 +121,9 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      * @param ids 主键集合
      * @return 操作结果
      */
-    public ResultBean<String> delConfig(String[] ids) {
+    public void delConfig(String[] ids) {
         this.removeByIds(Arrays.asList(ids));
-        return ResultBean.success();
+        // TODO
     }
 
     /**
@@ -131,12 +133,13 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      * @return ConfigCache
      */
     public ConfigVO getConfig(String configKey) {
-        List<ConfigVO> list = redisUtils.getCacheList(RedisKey.CONFIG_LIST_KEY);
-        for (ConfigVO configCache : list) {
-            if (configKey.equals(configCache.getConfigKey())) {
-                return configCache;
+        AtomicReference<ConfigVO> configCache = new AtomicReference<>();
+        List<ConfigVO> list = redisUtils.getCacheObject(RedisKey.CONFIG_LIST_KEY);
+        list.parallelStream().forEach(config -> {
+            if (configKey.equals(config.getConfigKey())) {
+                configCache.set(config);
             }
-        }
-        return null;
+        });
+        return configCache.get();
     }
 }

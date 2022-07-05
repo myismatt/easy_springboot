@@ -34,8 +34,8 @@ public class ConfigController {
     /**
      * 重载缓存
      */
-    @GetMapping("overloadConfig")
-    @ApiOperation("重载缓存")
+    @GetMapping("overload")
+    @ApiOperation(value = "重载缓存", httpMethod = "GET")
     public void overloadConfig() {
         configService.configInitCache();
     }
@@ -46,8 +46,8 @@ public class ConfigController {
      * @param configKey key
      * @return ConfigCache
      */
-    @GetMapping("getConfig/{configKey}")
-    @ApiOperation("获取参数配置")
+    @GetMapping("{configKey}")
+    @ApiOperation(value = "获取参数配置", httpMethod = "GET")
     public ResultBean<ConfigVO> getConfig(@PathVariable String configKey) {
         return ResultBean.success(configService.getConfig(configKey));
     }
@@ -58,8 +58,8 @@ public class ConfigController {
      * @param dto 查询入参
      * @return ConfigCache
      */
-    @GetMapping("getListConfig")
-    @ApiOperation("集合查询")
+    @GetMapping("query")
+    @ApiOperation(value = "集合查询", httpMethod = "GET")
     public ResultBean<List<ConfigVO>> getList(ConfigSearchDTO dto) {
         return ResultBean.success(configService.getList(dto));
     }
@@ -70,10 +70,10 @@ public class ConfigController {
      * @param dto 查询入参
      * @return IPage<Config>
      */
-    @GetMapping("pageConfig")
-    @ApiOperation("分页查询")
+    @GetMapping("page")
+    @ApiOperation(value = "分页查询", httpMethod = "GET")
     public ResultBean<IPage<Config>> pageConfig(ConfigSearchDTO dto) {
-        return configService.pageConfig(dto);
+        return ResultBean.success(configService.pageConfig(dto));
     }
 
     /**
@@ -82,10 +82,11 @@ public class ConfigController {
      * @param dto 入参
      * @return 操作结果
      */
-    @PutMapping("addConfig")
-    @ApiOperation("新增参数配置")
+    @PostMapping("add")
+    @ApiOperation(value = "新增参数配置", httpMethod = "POST")
     public ResultBean<String> addConfig(@Valid @RequestBody ConfigDTO dto) {
-        return configService.addConfig(dto);
+        configService.addConfig(dto);
+        return ResultBean.success("新增成功");
     }
 
     /**
@@ -94,10 +95,11 @@ public class ConfigController {
      * @param config 入参
      * @return 操作结果
      */
-    @PostMapping("updateConfig")
-    @ApiOperation("更新参数配置")
+    @PutMapping("update")
+    @ApiOperation(value = "更新参数配置", httpMethod = "PUT")
     public ResultBean<String> updateConfig(@Valid @RequestBody Config config) {
-        return configService.updateConfig(config);
+        configService.updateConfig(config);
+        return ResultBean.success("更新成功");
     }
 
     /**
@@ -106,10 +108,11 @@ public class ConfigController {
      * @param ids 主键集合
      * @return 操作结果
      */
-    @DeleteMapping("delConfig")
-    @ApiOperation("删除参数配置")
+    @DeleteMapping("delete")
+    @ApiOperation(value = "删除参数配置", httpMethod = "DELETE")
     public ResultBean<String> delConfig(@RequestBody String[] ids) {
-        return configService.delConfig(ids);
+        configService.delConfig(ids);
+        return ResultBean.success("删除成功");
     }
 
 }

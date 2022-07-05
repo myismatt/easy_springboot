@@ -48,7 +48,7 @@ public class LoginController {
      *
      * @return UserInfoVO
      */
-    @GetMapping("getUserInfo")
+    @GetMapping("userInfo")
     @ApiOperation(value = "获取用户信息", httpMethod = "GET")
     public ResultBean<UserInfoVO> gtUserInfo() {
         return ResultBean.success(loginService.getUserInfo());

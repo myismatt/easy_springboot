@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 28/06/2022 15:16:11
+ Date: 05/07/2022 18:25:53
 */
 
 SET NAMES utf8mb4;
@@ -34,6 +34,7 @@ CREATE TABLE `easy_config`
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE KEY `index_config_key` (`config_key`) USING BTREE COMMENT 'config_key唯一键值索引'
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci
   ROW_FORMAT = DYNAMIC COMMENT ='参数配置';
@@ -42,6 +43,9 @@ CREATE TABLE `easy_config`
 -- Records of easy_config
 -- ----------------------------
 BEGIN;
+INSERT INTO `easy_config` (`id`, `config_name`, `config_key`, `config_value`, `config_type`, `create_time`,
+                           `update_time`, `remark`)
+VALUES (1, '启用注册功能', 'enable_register', '0', 1, '2022-07-05 17:24:02', '2022-07-05 17:26:34', '');
 COMMIT;
 
 -- ----------------------------

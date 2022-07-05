@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "测试")
 public class TestController {
 
-    @GetMapping("getTime")
-    @ApiOperation("获取当前时间")
+    @GetMapping("time")
+    @ApiOperation(value = "获取当前时间", httpMethod = "GET")
     public String getTime() {
         return DateUtils.getTime();
     }

@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class SecurityUtils {
 
+    private final static BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+
     /**
      * 获取请求中的token
      *
@@ -52,7 +54,7 @@ public class SecurityUtils {
      * @return 密文
      */
     public static String encode(String password) {
-        return new BCryptPasswordEncoder().encode(password);
+        return bcrypt.encode(password);
     }
 
     /**
@@ -63,6 +65,6 @@ public class SecurityUtils {
      * @return true/false
      */
     public static boolean matches(String rawPassword, String encodedPassword) {
-        return new BCryptPasswordEncoder().matches(rawPassword, encodedPassword);
+        return bcrypt.matches(rawPassword, encodedPassword);
     }
 }

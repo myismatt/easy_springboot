@@ -1,22 +1,20 @@
-# 密钥配置
+# HTTP请求规范
 
-## Jasypt
+1. GET (SELECT)            查询；从服务器取出资源；
+2. POST(CREATE)            新增; 在服务器上新建一个资源；
+3. PUT(UPDATE)             更新; 在服务器上更新资源(客户端提供改变后的完整资源)；
+4. PATCH(UPDATE)           更新；在服务器上更新部分资源(客户端提供改变的属性)；
+5. DELETE(DELETE)          删除; 从服务器上删除资源；
 
-```text
-algorithm: PBEWITHHMACSHA512ANDAES_256
-password: X7m2#q4nMjx5kUeW
-```
+# 接口设计规范
 
-## DES
-
-```text
-
-```
-
-## RSA
-
-```text
-公钥:MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCAdk48ndXLLXJ1eUIahCGye3/JSUw571iQR0Fqhv2tal5F7lsZucR203SAcNSWrdeG6+iKHKBGVWs7GWRUNjeGyZfcTV0aHv/BKrk4A5Hbj/b/oKZk4EhYFuvJICY7OHJLtkdYRp90ijj6d6OFAHP7qORm3Y8NR47GNL09I++h4QIDAQAB
-私钥:MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIB2Tjyd1cstcnV5QhqEIbJ7f8lJTDnvWJBHQWqG/a1qXkXuWxm5xHbTdIBw1Jat14br6IocoEZVazsZZFQ2N4bJl9xNXRoe/8EquTgDkduP9v+gpmTgSFgW68kgJjs4cku2R1hGn3SKOPp3o4UAc/uo5Gbdjw1HjsY0vT0j76HhAgMBAAECgYAIqfH03KBCp7oEej0fFLJBG1su9CaT8bSDZore6GPLglUBWmYCgijh6rj8wJ9V2jui+d4hEnUsyS4GOlwt4co00H4C7FLWjPbvvx05sNTaFTPsqRnWEXPXs+dHHq+hH9tgJi5mOOg9S85UiWVYddhy2fUnFkuD1SIzC9FMNGJ0AQJBAL6R+ORyYNNzqHEz+mYL/fTiwSn2m+F6PRrFEhS2avW/W21ICW5dOoSJDCqjgqrDHgIfMhpsGEEOGQq7mPe1GhECQQCskWPakSGPV3chBcXzykW9e3Z4KezyLxwodcXCEYh4pm2H3XXOYsPdoRV4Ns7zLTwI//2n4UUlqTWA3URk1brRAkAhQP+ZfYv/2fLOri9Hl1gdX2QtmmbhFZ+MCE97ZcmMUHP3wdZDd+k6L1/8IMQwYBPgcukfSzWARKGCCfJLZ0LBAkEAqFd8jW8eyfKNKA21uckMl3elbjuYBfmnAmFBdbwc4XWZS/ziO19lqwLFKuxsnhT2h+ER1X+QMNkMdJVlbuiAwQJBALCeDoJSIteFBrNMJWXjLRAevJK+k3Go34oRavMoUi1MPprr8MAlmBtk5AiIJmRdZfjXoVGNBrOF8qBivg/VT/A=
-```
-
+1. 命名规范采用 动词+宾语 的模式，宾语必须是名词；
+2. 避免多级 URL；
+3. uri末尾不需要出现斜杠/；
+4. 在uri中使用斜杠/是表达层级关系的；
+5. 在uri中可以使用连接符-, 来提升可读性。比如 https://xxx.com/xx-yy 比 https://xxx.com/xx_yy中的可读性更好；
+6. 在uri中不允许出现下划线字符_；
+7. 在uri中尽量使用小写字符；
+8. 在uri中不允许出现文件扩展名. 比如接口为 /xxx/api, 不要写成 /xxx/api.php 这样的是不合法的；
+9. 在uri中使用复数形式；
+10. 需要明确返回状态码，发生异常要有对应的状态码，不能是200；
