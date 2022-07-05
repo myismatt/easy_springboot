@@ -1,4 +1,4 @@
-package com.easy.facade.config;
+package com.easy.facade.framework.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

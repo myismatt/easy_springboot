@@ -1,4 +1,4 @@
-package com.easy.facade.service;
+package com.easy.facade.services;
 
 import cn.hutool.core.util.RandomUtil;
 import com.easy.facade.beans.entity.EmailActivationCodeMessage;

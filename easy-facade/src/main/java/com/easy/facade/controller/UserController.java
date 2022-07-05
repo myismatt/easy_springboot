@@ -3,7 +3,7 @@ package com.easy.facade.controller;
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.RegisterDTO;
 import com.easy.facade.framework.exception.CustomException;
-import com.easy.facade.service.UserService;
+import com.easy.facade.services.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;

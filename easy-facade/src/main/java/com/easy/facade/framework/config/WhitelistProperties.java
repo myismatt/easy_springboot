@@ -1,4 +1,4 @@
-package com.easy.facade.config;
+package com.easy.facade.framework.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.easy.facade.annotation;
+package com.easy.facade.framework.annotation;
 
 import java.lang.annotation.*;
 

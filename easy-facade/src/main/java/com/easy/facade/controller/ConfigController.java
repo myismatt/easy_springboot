@@ -6,7 +6,7 @@ import com.easy.facade.beans.dto.ConfigDTO;
 import com.easy.facade.beans.dto.ConfigSearchDTO;
 import com.easy.facade.beans.model.Config;
 import com.easy.facade.beans.vo.ConfigVO;
-import com.easy.facade.service.ConfigService;
+import com.easy.facade.services.ConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

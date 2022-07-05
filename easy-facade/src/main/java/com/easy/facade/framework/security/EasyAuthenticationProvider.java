@@ -2,7 +2,7 @@ package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.framework.exception.CustomException;
-import com.easy.facade.service.UserDetailsServiceImpl;
+import com.easy.facade.services.UserDetailsServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,28 +38,10 @@ public class EasyAuthenticationProvider implements AuthenticationProvider {
         }
         // userDetails为数据库中查询到的用户信息
         LoginUserDetails userDetails = (LoginUserDetails) userDetailsService.loadUserByUsername(username);
-        // 账号存在
-        if (userDetails != null) {
-            // 处理账号状态问题
-            switch (userDetails.getAccountStatus()) {
-                case NORMAL:
-                    break;
-                case INACTIVATED:
-                    throw new CustomException("账号未激活");
-                case STOP:
-                    throw new CustomException("账号被停用");
-                default:
-                    throw new CustomException("账号信息异常");
-            }
-            // 手动校验密码
-            if (StringUtils.isNotBlank(password) && !new BCryptPasswordEncoder().matches(password, userDetails.getPassword())) {
-                throw new CustomException("密码错误");
-            }
+        // 手动校验密码
+        if (!new BCryptPasswordEncoder().matches(password, userDetails.getPassword())) {
+            throw new CustomException("密码错误");
         }
-        else {
-            throw new CustomException("账号不存在");
-        }
-
         return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 

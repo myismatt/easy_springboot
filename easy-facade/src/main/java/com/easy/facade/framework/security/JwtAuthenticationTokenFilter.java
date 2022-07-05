@@ -2,10 +2,10 @@ package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.entity.LoginUserDetails;
-import com.easy.facade.config.KeyConfig;
-import com.easy.facade.config.WhitelistProperties;
 import com.easy.facade.constants.RedisKey;
 import com.easy.facade.enums.HttpStatus;
+import com.easy.facade.framework.config.KeyConfig;
+import com.easy.facade.framework.config.WhitelistProperties;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.encryption.RsaUtils;
 import com.easy.utils.io.ResponseUtils;

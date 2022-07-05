@@ -1,4 +1,4 @@
-package com.easy.facade.service;
+package com.easy.facade.services;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

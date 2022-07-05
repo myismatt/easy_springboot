@@ -1,4 +1,4 @@
-package com.easy.facade.service;
+package com.easy.facade.services;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.facade.beans.model.Role;

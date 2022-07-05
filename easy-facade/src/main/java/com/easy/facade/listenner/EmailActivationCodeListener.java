@@ -2,7 +2,7 @@ package com.easy.facade.listenner;
 
 import com.easy.facade.beans.entity.EmailActivationCodeMessage;
 import com.easy.facade.framework.redis.RedisUtils;
-import com.easy.facade.service.MailService;
+import com.easy.facade.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;

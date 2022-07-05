@@ -1,7 +1,7 @@
 package com.easy.facade.framework.security;
 
-import com.easy.facade.annotation.IgnoreAuth;
-import com.easy.facade.config.WhitelistProperties;
+import com.easy.facade.framework.annotation.IgnoreAuth;
+import com.easy.facade.framework.config.WhitelistProperties;
 import com.easy.utils.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
