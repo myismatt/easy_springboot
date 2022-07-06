@@ -124,10 +124,9 @@ public class RedisUtils {
     public <T> List<T> getCacheList(final String key) {
         return (List<T>) redisTemplate.opsForList().range(key, 0, -1);
     }
-
     /**
      * 删除列表中值为value的元素，总共删除count次；
-     * <p>
+     *
      * 如原来列表为 【1， 2， 3， 4， 5， 2， 1， 2， 5】
      * 传入参数 value=2, count=1 表示删除一个列表中value为2的元素
      * 则执行后，列表为 【1， 3， 4， 5， 2， 1， 2， 5】

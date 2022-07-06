@@ -7,7 +7,6 @@ import com.easy.facade.beans.dto.ConfigDTO;
 import com.easy.facade.beans.dto.ConfigSearchDTO;
 import com.easy.facade.beans.model.Config;
 import com.easy.facade.beans.vo.ConfigVO;
-import com.easy.facade.constants.RedisKey;
 import com.easy.facade.dao.ConfigMapper;
 import com.easy.facade.enums.YesOrNoEnum;
 import com.easy.facade.framework.redis.RedisUtils;
@@ -55,7 +54,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
         dto.setConfigType(YesOrNoEnum.YES);
         List<ConfigVO> list = this.baseMapper.selectConfigVO(dto);
         if (StringUtils.isNotNull(list)) {
-            ConfigUtils.setConfigList(list);
+            ConfigUtils.getInstance().setConfigList(list);
         }
     }
 
@@ -97,7 +96,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
             // 增加缓存
             ConfigVO cache = new ConfigVO();
             BeanUtils.populate(newConfig, cache);
-            ConfigUtils.addConfigList(cache);
+            ConfigUtils.getInstance().addConfigList(cache);
         }
     }
 
@@ -109,10 +108,11 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateConfig(Config config) {
-        if (config.getConfigType().equals(YesOrNoEnum.YES)) {
-            // TODO
-        }
         this.updateById(config);
+        // 变更缓存
+        ConfigVO cache = new ConfigVO();
+        BeanUtils.populate(config, cache);
+        ConfigUtils.getInstance().updateConfig(cache);
     }
 
     /**
@@ -123,7 +123,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      */
     public void delConfig(String[] ids) {
         this.removeByIds(Arrays.asList(ids));
-        // TODO
+        ConfigUtils.getInstance().delConfig(List.of(ids));
     }
 
     /**
@@ -134,7 +134,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      */
     public ConfigVO getConfig(String configKey) {
         AtomicReference<ConfigVO> configCache = new AtomicReference<>();
-        List<ConfigVO> list = redisUtils.getCacheObject(RedisKey.CONFIG_LIST_KEY);
+        List<ConfigVO> list = ConfigUtils.getInstance().getConfigList();
         list.parallelStream().forEach(config -> {
             if (configKey.equals(config.getConfigKey())) {
                 configCache.set(config);
