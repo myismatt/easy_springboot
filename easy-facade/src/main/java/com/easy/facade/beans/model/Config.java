@@ -21,6 +21,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "easy_config")
 public class Config extends BaseEntity {
+
     /**
      * 参数名称
      */

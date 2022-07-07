@@ -5,14 +5,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.facade.beans.dto.ConfigDTO;
 import com.easy.facade.beans.dto.ConfigSearchDTO;
+import com.easy.facade.beans.dto.ConfigUpdateDTO;
 import com.easy.facade.beans.model.Config;
 import com.easy.facade.beans.vo.ConfigVO;
 import com.easy.facade.dao.ConfigMapper;
 import com.easy.facade.enums.YesOrNoEnum;
-import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.facade.utils.ConfigUtils;
-import com.easy.utils.bean.BeanUtils;
 import com.easy.utils.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,13 +30,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Service
 public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
-
-    private final RedisUtils redisUtils;
-
-    public ConfigService(RedisUtils redisUtils) {
-        this.redisUtils = redisUtils;
-    }
-
 
     /**
      * 项目启动时，初始化系统配置参数到缓存
@@ -85,17 +78,16 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      * 新增参数配置
      *
      * @param dto 入参
-     * @return 操作结果
      */
     public void addConfig(ConfigDTO dto) {
         Config newConfig = new Config();
-        BeanUtils.populate(dto, newConfig);
+        BeanUtils.copyProperties(dto, newConfig);
         this.save(newConfig);
         // 如果是系统缓存
         if (dto.getConfigType().equals(YesOrNoEnum.YES)) {
             // 增加缓存
             ConfigVO cache = new ConfigVO();
-            BeanUtils.populate(newConfig, cache);
+            BeanUtils.copyProperties(newConfig, cache);
             ConfigUtils.getInstance().addConfigList(cache);
         }
     }
@@ -103,15 +95,16 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
     /**
      * 更新参数配置
      *
-     * @param config 入参
-     * @return 操作结果
+     * @param dto 入参
      */
     @Transactional(rollbackFor = Exception.class)
-    public void updateConfig(Config config) {
+    public void updateConfig(ConfigUpdateDTO dto) {
+        Config config = new Config();
+        BeanUtils.copyProperties(dto, config);
         this.updateById(config);
         // 变更缓存
         ConfigVO cache = new ConfigVO();
-        BeanUtils.populate(config, cache);
+        BeanUtils.copyProperties(config, cache);
         ConfigUtils.getInstance().updateConfig(cache);
     }
 
@@ -119,7 +112,6 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      * 删除参数配置
      *
      * @param ids 主键集合
-     * @return 操作结果
      */
     public void delConfig(String[] ids) {
         this.removeByIds(Arrays.asList(ids));

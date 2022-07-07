@@ -11,9 +11,9 @@
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="component" jdbcType="VARCHAR" property="component"/>
         <result column="is_frame" jdbcType="INTEGER" property="isFrame"/>
-        <result column="menu_type" jdbcType="CHAR" property="menuType"/>
-        <result column="visible" jdbcType="INTEGER" property="visible"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="menu_type" jdbcType="INTEGER" property="menuType"/>
+        <result column="show" jdbcType="INTEGER" property="show"/>
+        <result column="enable" jdbcType="INTEGER" property="enable"/>
         <result column="perms" jdbcType="VARCHAR" property="perms"/>
         <result column="icon" jdbcType="VARCHAR" property="icon"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -22,7 +22,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, menu_name, parent_id, order_num, `path`, component, is_frame, menu_type, visible,
-        `status`, perms, icon, create_time, update_time, remark
+        id, menu_name, parent_id, order_num, `path`, component, is_frame, menu_type, `show`,
+        `enable`, perms, icon, create_time, update_time, remark
     </sql>
 </mapper>

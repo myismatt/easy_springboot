@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.ConfigDTO;
 import com.easy.facade.beans.dto.ConfigSearchDTO;
+import com.easy.facade.beans.dto.ConfigUpdateDTO;
 import com.easy.facade.beans.model.Config;
 import com.easy.facade.beans.vo.ConfigVO;
 import com.easy.facade.services.ConfigService;
@@ -97,8 +98,8 @@ public class ConfigController {
      */
     @PutMapping("update")
     @ApiOperation(value = "更新参数配置", httpMethod = "PUT")
-    public ResultBean<String> updateConfig(@Valid @RequestBody Config config) {
-        configService.updateConfig(config);
+    public ResultBean<String> updateConfig(@Valid @RequestBody ConfigUpdateDTO dto) {
+        configService.updateConfig(dto);
         return ResultBean.success("更新成功");
     }
 
