@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel("菜单入参")
 public class MenuDTO {
+
     /**
      * 菜单名称
      */

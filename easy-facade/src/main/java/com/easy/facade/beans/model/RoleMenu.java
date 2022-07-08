@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * 角色菜单关联
@@ -17,6 +18,7 @@ import lombok.EqualsAndHashCode;
  */
 @ApiModel(value = "角色菜单关联")
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "easy_role_menu")
 public class RoleMenu extends BaseEntity {
@@ -33,4 +35,9 @@ public class RoleMenu extends BaseEntity {
     @TableField(value = "menu_id")
     @ApiModelProperty(value = "菜单ID")
     private String menuId;
+
+    public RoleMenu(String roleId, String menuId) {
+        this.roleId = roleId;
+        this.menuId = menuId;
+    }
 }

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * 角色入参
@@ -35,4 +36,10 @@ public class RoleDTO {
      */
     @ApiModelProperty(value = "显示顺序")
     private Integer roleSort;
+
+    /**
+     * 菜单id集合
+     */
+    @ApiModelProperty(value = "菜单id集合")
+    private List<String> menuIdList;
 }

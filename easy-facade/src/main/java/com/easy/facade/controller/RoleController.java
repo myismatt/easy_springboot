@@ -5,10 +5,7 @@ import com.easy.facade.beans.dto.RoleDTO;
 import com.easy.facade.services.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,6 +25,25 @@ public class RoleController {
 
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
+    }
+
+
+    // TODO
+    @GetMapping("info/{roleKey}")
+    @ApiOperation(value = "获取角色详情", httpMethod = "GET")
+    public ResultBean<String> getInfo(@PathVariable String roleKey) {
+        return ResultBean.success();
+    }
+
+    /**
+     * 检查角色Key是否存在
+     *
+     * @return false 不存在;true 存在
+     */
+    @GetMapping("check_role_key/{roleKey}")
+    @ApiOperation(value = "检查角色Key是否存在", httpMethod = "GET")
+    public ResultBean<Boolean> checkRoleKeyExists(@PathVariable String roleKey) {
+        return ResultBean.success("查询成功", roleService.checkRoleKeyExists(roleKey));
     }
 
     /**

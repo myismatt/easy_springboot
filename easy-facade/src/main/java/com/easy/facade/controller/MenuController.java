@@ -1,16 +1,17 @@
 package com.easy.facade.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.MenuDTO;
+import com.easy.facade.beans.dto.MenuSearchDTO;
+import com.easy.facade.beans.model.Menu;
 import com.easy.facade.services.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 菜单管理
@@ -30,13 +31,38 @@ public class MenuController {
         this.menuService = menuService;
     }
 
+
+    /**
+     * 获取菜单(集合)
+     *
+     * @param dto 查询参数
+     * @return 集合数据
+     */
+    @GetMapping("list")
+    @ApiOperation(value = "列表", httpMethod = "GET")
+    public ResultBean<List<Menu>> getList(MenuSearchDTO dto) {
+        return ResultBean.success("查询成功", menuService.getList(dto));
+    }
+
+    /**
+     * 获取菜单(分页)
+     *
+     * @param dto 查询参数
+     * @return 分页数据
+     */
+    @GetMapping("page")
+    @ApiOperation(value = "分页", httpMethod = "GET")
+    public ResultBean<IPage<Menu>> getPage(MenuSearchDTO dto) {
+        return ResultBean.success("查询成功", menuService.getPage(dto));
+    }
+
     /**
      * 新增菜单权限
      *
      * @return 操作结果
      */
     @PostMapping("add")
-    @ApiOperation(value = "新增菜单", httpMethod = "POST")
+    @ApiOperation(value = "新增", httpMethod = "POST")
     public ResultBean<String> addMenu(@Valid @RequestBody MenuDTO dto) {
         menuService.addMenu(dto);
         return ResultBean.success("操作成功");
