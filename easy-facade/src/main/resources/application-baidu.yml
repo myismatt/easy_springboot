@@ -1,0 +1,56 @@
+server:
+  port: 9527
+
+spring:
+  # 数据库配置
+  datasource:
+    druid:
+      url: jdbc:mysql://120.48.20.27:3124/easy_springboot?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+      username: matt
+      password: 5qs2pLjw
+
+  # redis配置
+  redis:
+    host: 120.48.20.27
+    port: 4399
+    password: D!J?OMca
+    database: 1
+    # 连接超时时间（毫秒）
+    timeout: 1000
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 20
+        # 连接池中的最大空闲连接
+        max-idle: 10
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+  # 邮件服务配置
+  mail:
+    # 配置 SMTP 服务器地址
+    host: smtp.qq.com
+    # 邮件协议
+    protocol: smtp
+    # 端口号465或587
+    port: 587
+    # 默认的邮件编码为UTF-8
+    default-encoding: UTF-8
+    # 发送者邮箱
+    username: 812262134@qq.com
+    # 配置密码，注意不是真正的密码,而是申请到的授权码
+    password: cxtognhroyuzbefj
+    # 配置SSL 加密工厂
+    properties:
+      mail:
+        smtp:
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+        #表示开启DEBUG模式,邮件发送过程的日志会在控制台打印出来,方便排查错误
+        debug: true
+
+# rsa加密公私钥
+key:
+  rsaPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlai37puZLP/9JeagiRUt2Ypm7EKMj9Z3Gyr9f4XiVbEo7iZhuGlAmY0BdXW0VEyxHTxJZXl9FPDk+HGehzNaR0Lvv2WG66y3tJeNCMppFMR0igKkBRfktAmGAVReph+psCubzNLiVObYo3Ieit/p5wMfNjezjQM3v+eHskURBRCqyPtdxmQtImGJPD0Urr+BSOEEMAcSN8vxWEGMATErbdaiVhwl3/3wsS8gQIkf7D5+A9D1uGJpBag1u6hzChmTHa0Zi7nTsv0oR/OKzxGVb9BHqFO0GDm2LkYHgrl+PTiOl3mll0AkK+7HD6FCv9h0nraC+IncHGNcHxWydkJbowIDAQAB
+  rsaPrivateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCVqLfum5ks//0l5qCJFS3ZimbsQoyP1ncbKv1/heJVsSjuJmG4aUCZjQF1dbRUTLEdPElleX0U8OT4cZ6HM1pHQu+/ZYbrrLe0l40IymkUxHSKAqQFF+S0CYYBVF6mH6mwK5vM0uJU5tijch6K3+nnAx82N7ONAze/54eyRREFEKrI+13GZC0iYYk8PRSuv4FI4QQwBxI3y/FYQYwBMStt1qJWHCXf/fCxLyBAiR/sPn4D0PW4YmkFqDW7qHMKGZMdrRmLudOy/ShH84rPEZVv0EeoU7QYObYuRgeCuX49OI6XeaWXQCQr7scPoUK/2HSetoL4idwcY1wfFbJ2QlujAgMBAAECggEAfiuOXW/6dBCgh9pmDwu26saevKHiRMVnBpV4v5DM3reLrTLYgZLiblGNIEyKKeO6Ec6ohg8lH4lzT+zh3FOz0Y4h9zcNxxSGj46QzQ9wBZ0WLt/JDa42Fn5M5kQNw3nAIhCxub00KKWxkCH+k8/wLtzX7GqLSd+jmXsFUIqfraczdmQv6rGK1QK5opuHgNXNykdI+Xx5SCN4clXVtJnUxVFJWHb/tXJVoHH/QwlgMJEdCWXeZ3izPxV8vQV1VHstKIo8GB5O+5dBozJahbMTh6fABSM7RCg0V4E3jxeOphy3BFn5QEqHa2E5Du8Ew1JZvpo26uMlhIztm6dY3B4s4QKBgQDTulSt4WkkgmYH3tb2kVOcT2+xoX/Z+wQVRkCUX1j6s81l8xclW8aFmChhymgaqtAk8QCKOnaVeMX6PHXdz6W+QoXu/7zXS8PWZmolKVDYJN1EIYTs6emzMI351f3AumE81EcG0o+v6n2APR17UW4bUoy9iI5BHA8HofkWsyqmUQKBgQC08+GGdDE22F0cC3OqSZl5lL/PpU3NvGK81AV/o5a7ib3r6REc6GsOqGY+jmexVyC7JqQR5O0Dihmr/4OZ1r51bFkY8DKSHQ0jqlWcYH/TDW4pa0ePRcKPmPx6q17fze7UIwVoyIk4RtUxoz/ESc1AyXuhujNJrWAmK6lSiv3BswKBgB7Pkb0P/V37v99LVVriQRmREb72soVFGw4BgCpXSbqJ6cz5OBgOp/AO+WlprAadbtbBX4O+CD2uKplErR5PNl5ejeD+xDtMYj5T/wRTY9lgW/arLg3P6FtUKIT/2AJw3O+eMIvUnmZKKGM+AYlNi0lclPCL66+b5rAEqRvdjMpRAoGAfuscAOFYb358eCI0I3lx80v46VypYKdEnescXDVSkQGAu4oCncMK7AIDjNb3NfTFmV717zMhZr0jWndiR7HObq/rIkm/Pqqvv5dGauNoZJDj9psvWvd0CqIkXKn8Zn+bhyF1NtSJInbUK/ezzypwk4N+eqYOORwo9zzii2m/qG8CgYAd/7wdXZib9xYuP+6YGxTzlFoN6b4ifsjn61b7FL8xc9ZKLYvAHxQtpbOKRSOqdzcGmXjG32fA85+Vg16ZktwX/do/rY3JXA9aoDDDjko8is/DWYJsrC9hMUP3ZGYg5Uo3ZENxVSABPwMz+0vgPGuODZzz8/qw+RU+o3dkpZRa5Q==
+  desKey: baWmPZGNOu8c
