@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 参数配置缓存信息
  *
@@ -14,7 +16,10 @@ import lombok.Data;
  */
 @Data
 @ApiModel("参数配置信息")
-public class ConfigVO {
+public class ConfigVO implements Serializable {
+
+    private static final long serialVersionUID = 7244463489678784308L;
+
     /**
      * 参数名称
      */

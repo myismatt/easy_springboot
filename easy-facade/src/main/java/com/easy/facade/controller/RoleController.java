@@ -2,6 +2,7 @@ package com.easy.facade.controller;
 
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.RoleDTO;
+import com.easy.facade.beans.vo.RoleInfoVO;
 import com.easy.facade.services.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,11 +29,16 @@ public class RoleController {
     }
 
 
-    // TODO
+    /**
+     * 获取角色信息
+     *
+     * @param roleKey 角色关键词
+     * @return RoleInfoVO
+     */
     @GetMapping("info/{roleKey}")
     @ApiOperation(value = "获取角色详情", httpMethod = "GET")
-    public ResultBean<String> getInfo(@PathVariable String roleKey) {
-        return ResultBean.success();
+    public ResultBean<RoleInfoVO> getRoleInfo(@PathVariable String roleKey) {
+        return ResultBean.success(roleService.getRoleInfo(roleKey));
     }
 
     /**

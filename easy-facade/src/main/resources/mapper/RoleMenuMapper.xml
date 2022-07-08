@@ -13,6 +13,22 @@
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, role_id, menu_id, create_time, update_time, remark
+        id,
+        role_id,
+        menu_id,
+        create_time,
+        update_time,
+        remark
     </sql>
+
+    <select id="selectRoleMenuByRoleId" resultType="com.easy.facade.beans.vo.RoleMenuVO">
+        select rm.id AS menuId,
+        m.menu_name AS menuName,
+        m.parent_id AS parentId,
+        m.order_num AS orderNum,
+        m.menu_type AS menuType
+        from easy_role_menu rm
+        left join easy_menu m on m.id = rm.menu_id
+        where rm.role_id = #{roleId}
+    </select>
 </mapper>
