@@ -38,7 +38,7 @@ public class MenuController {
      * @param dto 查询参数
      * @return 集合数据
      */
-    @GetMapping("list")
+    @GetMapping(value = "list", headers = "Authorization")
     @ApiOperation(value = "列表", httpMethod = "GET")
     public ResultBean<List<Menu>> getList(MenuSearchDTO dto) {
         return ResultBean.success("查询成功", menuService.getList(dto));
@@ -50,7 +50,7 @@ public class MenuController {
      * @param dto 查询参数
      * @return 分页数据
      */
-    @GetMapping("page")
+    @GetMapping(value = "page", headers = "Authorization")
     @ApiOperation(value = "分页", httpMethod = "GET")
     public ResultBean<IPage<Menu>> getPage(MenuSearchDTO dto) {
         return ResultBean.success("查询成功", menuService.getPage(dto));
@@ -61,7 +61,7 @@ public class MenuController {
      *
      * @return 操作结果
      */
-    @PostMapping("add")
+    @PostMapping(value = "add", headers = "Authorization")
     @ApiOperation(value = "新增", httpMethod = "POST")
     public ResultBean<String> addMenu(@Valid @RequestBody MenuDTO dto) {
         menuService.addMenu(dto);

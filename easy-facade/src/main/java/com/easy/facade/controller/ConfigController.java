@@ -59,7 +59,7 @@ public class ConfigController {
      * @param dto 查询入参
      * @return ConfigCache
      */
-    @GetMapping("query")
+    @GetMapping(value = "query", headers = "Authorization")
     @ApiOperation(value = "集合查询", httpMethod = "GET")
     public ResultBean<List<ConfigVO>> getList(ConfigSearchDTO dto) {
         return ResultBean.success(configService.getList(dto));
@@ -71,7 +71,7 @@ public class ConfigController {
      * @param dto 查询入参
      * @return IPage<Config>
      */
-    @GetMapping("page")
+    @GetMapping(value = "page", headers = "Authorization")
     @ApiOperation(value = "分页查询", httpMethod = "GET")
     public ResultBean<IPage<Config>> pageConfig(ConfigSearchDTO dto) {
         return ResultBean.success(configService.pageConfig(dto));
@@ -93,10 +93,10 @@ public class ConfigController {
     /**
      * 更新参数配置
      *
-     * @param config 入参
+     * @param dto 入参
      * @return 操作结果
      */
-    @PutMapping("update")
+    @PutMapping(value = "update", headers = "Authorization")
     @ApiOperation(value = "更新参数配置", httpMethod = "PUT")
     public ResultBean<String> updateConfig(@Valid @RequestBody ConfigUpdateDTO dto) {
         configService.updateConfig(dto);
@@ -109,7 +109,7 @@ public class ConfigController {
      * @param ids 主键集合
      * @return 操作结果
      */
-    @DeleteMapping("delete")
+    @DeleteMapping(value = "delete", headers = "Authorization")
     @ApiOperation(value = "删除参数配置", httpMethod = "DELETE")
     public ResultBean<String> delConfig(@RequestBody String[] ids) {
         configService.delConfig(ids);

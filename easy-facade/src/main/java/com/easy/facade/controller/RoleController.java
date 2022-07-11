@@ -35,7 +35,7 @@ public class RoleController {
      * @param roleKey 角色关键词
      * @return RoleInfoVO
      */
-    @GetMapping("info/{roleKey}")
+    @GetMapping(value = "info/{roleKey}", headers = "Authorization")
     @ApiOperation(value = "获取角色详情", httpMethod = "GET")
     public ResultBean<RoleInfoVO> getRoleInfo(@PathVariable String roleKey) {
         return ResultBean.success(roleService.getRoleInfo(roleKey));
@@ -57,7 +57,7 @@ public class RoleController {
      *
      * @return 操作结果
      */
-    @PostMapping("add")
+    @PostMapping(value = "add", headers = "Authorization")
     @ApiOperation(value = "新增角色", httpMethod = "POST")
     public ResultBean<String> addRole(@Valid @RequestBody RoleDTO dto) {
         roleService.addRole(dto);
