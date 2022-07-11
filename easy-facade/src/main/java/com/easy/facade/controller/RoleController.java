@@ -3,7 +3,7 @@ package com.easy.facade.controller;
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.RoleDTO;
 import com.easy.facade.beans.vo.RoleInfoVO;
-import com.easy.facade.services.RoleService;
+import com.easy.facade.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.easy.facade.services;
+package com.easy.facade.service;
 
 import com.easy.facade.beans.dto.LoginParamDTO;
 import com.easy.facade.beans.entity.LoginUserDetails;

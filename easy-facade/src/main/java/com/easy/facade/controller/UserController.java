@@ -1,6 +1,6 @@
 package com.easy.facade.controller;
 
-import com.easy.facade.services.UserService;
+import com.easy.facade.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

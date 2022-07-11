@@ -2,7 +2,7 @@ package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.framework.exception.CustomException;
-import com.easy.facade.services.UserDetailsServiceImpl;
+import com.easy.facade.service.UserDetailsServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

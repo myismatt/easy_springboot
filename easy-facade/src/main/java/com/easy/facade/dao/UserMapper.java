@@ -1,7 +1,6 @@
 package com.easy.facade.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.beans.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,9 +21,9 @@ public interface UserMapper extends BaseMapper<User> {
      * 根据用户名查询用户信息
      *
      * @param username username
-     * @return LoginUserDetails
+     * @return User
      */
-    LoginUserDetails loadUserByUsername(@Param("username") String username);
+    User loadUserByUsername(@Param("username") String username);
 
     /**
      * 校验userKey

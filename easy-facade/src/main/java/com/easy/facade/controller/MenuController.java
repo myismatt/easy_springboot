@@ -5,7 +5,7 @@ import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.MenuDTO;
 import com.easy.facade.beans.dto.MenuSearchDTO;
 import com.easy.facade.beans.model.Menu;
-import com.easy.facade.services.MenuService;
+import com.easy.facade.service.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,5 @@
 package com.easy.facade.beans.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.easy.facade.enums.AccountStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -9,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * 登录用户信息
@@ -43,11 +42,34 @@ public class LoginUserDetails implements UserDetails {
     private String password;
 
     /**
-     * 账号状态
+     * 权限列表
      */
-    @TableField(value = "account_status")
-    @ApiModelProperty(value = "账号状态")
-    private AccountStatusEnum accountStatus;
+    @ApiModelProperty(value = "权限列表")
+    private Set<String> permissions;
+
+    public LoginUserDetails() {
+    }
+
+    public LoginUserDetails(String id, String userKey, String username) {
+        this.id = id;
+        this.userKey = userKey;
+        this.username = username;
+    }
+
+    public LoginUserDetails(String id, String userKey, String username, Set<String> permissions) {
+        this.id = id;
+        this.userKey = userKey;
+        this.username = username;
+        this.permissions = permissions;
+    }
+
+    public LoginUserDetails(String id, String userKey, String username, String password, Set<String> permissions) {
+        this.id = id;
+        this.userKey = userKey;
+        this.username = username;
+        this.password = password;
+        this.permissions = permissions;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

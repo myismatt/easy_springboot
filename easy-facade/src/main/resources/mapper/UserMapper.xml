@@ -31,7 +31,7 @@
         remark
     </sql>
 
-    <select id="loadUserByUsername" resultType="com.easy.facade.beans.entity.LoginUserDetails">
+    <select id="loadUserByUsername" resultType="com.easy.facade.beans.model.User">
         SELECT id AS id,
         user_key AS userKey,
         username AS username,
@@ -39,7 +39,11 @@
         email AS email,
         `password` AS `password`,
         register_time AS registerTime,
-        account_status AS accountStatus
+        account_status AS accountStatus,
+        create_time AS createTime,
+        update_time AS updateTime,
+        remark AS remark
+
         FROM easy_user
         WHERE username = #{username}
     </select>

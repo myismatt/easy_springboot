@@ -4,7 +4,7 @@ import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.LoginParamDTO;
 import com.easy.facade.beans.entity.TokenInfo;
 import com.easy.facade.beans.vo.UserInfoVO;
-import com.easy.facade.services.LoginService;
+import com.easy.facade.service.LoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;

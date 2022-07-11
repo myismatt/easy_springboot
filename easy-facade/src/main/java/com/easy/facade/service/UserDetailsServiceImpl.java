@@ -1,6 +1,6 @@
-package com.easy.facade.services;
+package com.easy.facade.service;
 
-import com.easy.facade.beans.entity.LoginUserDetails;
+import com.easy.facade.beans.model.User;
 import com.easy.facade.framework.exception.CustomException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,11 +25,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LoginUserDetails userDetails = userService.getBaseMapper().loadUserByUsername(username);
+        User userInfo = userService.getBaseMapper().loadUserByUsername(username);
         // 账号存在
-        if (userDetails != null) {
+        if (userInfo != null) {
             // 处理账号状态问题
-            switch (userDetails.getAccountStatus()) {
+            switch (userInfo.getAccountStatus()) {
                 case NORMAL:
                     break;
                 case INACTIVATED:
@@ -39,11 +39,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 default:
                     throw new CustomException("账号信息异常");
             }
-        }
-        else {
+        } else {
             throw new CustomException("账号不存在");
         }
         // TODO 获取用户角色以及权限
-        return userDetails;
+        return null;
     }
 }
