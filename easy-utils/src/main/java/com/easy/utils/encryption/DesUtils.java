@@ -28,7 +28,8 @@ public class DesUtils {
      * @return 加密结果
      */
     public static String encryptByDes(String message, String keyString) {
-        if (StringUtils.isEmpty(message) || StringUtils.isEmpty(keyString)) {//当 加密数据或密钥 为空时，不做加密操作
+        //当 加密数据或密钥 为空时，不做加密操作
+        if (StringUtils.isEmpty(message) || StringUtils.isEmpty(keyString)) {
             return StringUtils.EMPTY;
         }
         String keyHexString = stringToHexString(keyString);
@@ -45,8 +46,7 @@ public class DesUtils {
             cipher.init(Cipher.ENCRYPT_MODE, secretkey, sr);
             byte[] result = cipher.doFinal(data);
             return new String(Base64.encodeBase64(result));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return StringUtils.EMPTY;
@@ -60,7 +60,8 @@ public class DesUtils {
      * @return 解密后的值
      */
     public static String decryptByDes(String dataHexString, String keyString) {
-        if (StringUtils.isEmpty(dataHexString) || StringUtils.isEmpty(keyString)) {//当 解密数据或密钥 为空时，不做加密操作
+        //当 解密数据或密钥 为空时，不做加密操作
+        if (StringUtils.isEmpty(dataHexString) || StringUtils.isEmpty(keyString)) {
             return StringUtils.EMPTY;
         }
         String keyHexString = stringToHexString(keyString);
@@ -76,8 +77,7 @@ public class DesUtils {
             cipher.init(Cipher.DECRYPT_MODE, secretkey, sr);
             result = cipher.doFinal(Base64.decodeBase64(dataHexString));
             return new String(result).trim();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -169,15 +169,13 @@ public class DesUtils {
         for (int i = 0; i < baKeyword.length; i++) {
             try {
                 baKeyword[i] = (byte) (0xff & Integer.parseInt(str.substring(i * 2, i * 2 + 2), 16));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         try {
-            str = new String(baKeyword, StandardCharsets.UTF_8);// UTF-16le:Not
-        }
-        catch (Exception e1) {
+            str = new String(baKeyword, StandardCharsets.UTF_8);
+        } catch (Exception e1) {
             e1.printStackTrace();
         }
         return str;

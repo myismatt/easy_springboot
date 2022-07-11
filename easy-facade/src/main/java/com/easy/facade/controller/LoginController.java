@@ -39,7 +39,7 @@ public class LoginController {
      */
     @PostMapping("login")
     @ApiOperation(value = "登录", httpMethod = "POST")
-    public ResultBean<TokenInfo> login(@Valid @RequestBody LoginParamDTO dto) {
+    public ResultBean<TokenInfo> login(@Valid @RequestBody LoginParamDTO dto) throws Exception {
         return ResultBean.success(loginService.login(dto));
     }
 
@@ -48,7 +48,7 @@ public class LoginController {
      *
      * @return UserInfoVO
      */
-    @GetMapping("userInfo")
+    @GetMapping(value = "userInfo", headers = "Authorization")
     @ApiOperation(value = "获取用户信息", httpMethod = "GET")
     public ResultBean<UserInfoVO> gtUserInfo() {
         return ResultBean.success(loginService.getUserInfo());

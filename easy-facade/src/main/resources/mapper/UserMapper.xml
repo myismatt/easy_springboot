@@ -16,6 +16,31 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
+
+    <resultMap id="UserInfoVO" type="com.easy.facade.beans.vo.UserInfoVO">
+        <!--@mbg.generated-->
+        <!--@Table easy_user-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="userKey" property="userKey"/>
+        <result column="username" property="username"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="registerTime" property="registerTime"/>
+        <result column="accountStatus" property="accountStatus"/>
+        <result column="remark" property="remark"/>
+        <result column="nickname" property="nickname"/>
+        <collection property="roleList" javaType="java.util.List" resultMap="RoleInfoVO"/>
+    </resultMap>
+
+    <resultMap id="RoleInfoVO" type="com.easy.facade.beans.vo.RoleInfoVO">
+        <id column="roleId" property="id"/>
+        <result column="roleName" property="roleName"/>
+        <result column="roleKey" property="roleKey"/>
+        <result column="roleSort" property="roleSort"/>
+        <result column="enable" property="enable"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         id,
@@ -31,20 +56,26 @@
         remark
     </sql>
 
-    <select id="loadUserByUsername" resultType="com.easy.facade.beans.model.User">
-        SELECT id AS id,
-        user_key AS userKey,
-        username AS username,
-        phone AS phone,
-        email AS email,
-        `password` AS `password`,
-        register_time AS registerTime,
-        account_status AS accountStatus,
-        create_time AS createTime,
-        update_time AS updateTime,
-        remark AS remark
-
-        FROM easy_user
+    <select id="loadUserByUsername" resultMap="UserInfoVO">
+        SELECT u.id AS id,
+        u.user_key AS userKey,
+        u.username AS username,
+        u.phone AS phone,
+        u.email AS email,
+        u.`password` AS `password`,
+        u.register_time AS registerTime,
+        u.account_status AS accountStatus,
+        ui.nickname AS nickname,
+        u.remark AS remark,
+        r.id AS roleId,
+        r.role_key AS roleKey,
+        r.role_name AS roleName,
+        r.role_sort AS roleSort,
+        r.`enable` AS `enable`
+        FROM easy_user u
+        left join easy_user_info ui on u.id = ui.user_id
+        LEFT JOIN easy_user_role ur ON u.id = ur.user_id
+        LEFT JOIN easy_role r ON r.id = ur.role_id
         WHERE username = #{username}
     </select>
 
@@ -55,5 +86,16 @@
         <foreach collection="userKeyList" item="userKey" open="(" separator="," close=")">
             #{userKey}
         </foreach>
+    </select>
+
+    <select id="selectMenuByUserId" resultType="java.lang.String">
+        select distinct m.perms
+        from easy_menu m
+        left join easy_role_menu rm on m.id = rm.menu_id
+        left join easy_user_role ur on rm.role_id = ur.role_id
+        left join easy_role r on r.id = ur.role_id
+        where m.enable = '1'
+        and r.enable = '1'
+        and ur.user_id = #{userId}
     </select>
 </mapper>

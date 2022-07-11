@@ -2,6 +2,7 @@ package com.easy.facade.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.facade.beans.model.User;
+import com.easy.facade.beans.vo.UserInfoVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,7 +24,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param username username
      * @return User
      */
-    User loadUserByUsername(@Param("username") String username);
+    UserInfoVO loadUserByUsername(@Param("username") String username);
 
     /**
      * 校验userKey
@@ -32,4 +33,12 @@ public interface UserMapper extends BaseMapper<User> {
      * @return 存在的值
      */
     List<String> checkUserKey(@Param("userKeyList") List<String> userKeyList);
+
+    /**
+     * 根据userId查询菜单权限
+     *
+     * @param userId 用户id
+     * @return List<String>
+     */
+    List<String> selectMenuByUserId(@Param("userId") String userId);
 }

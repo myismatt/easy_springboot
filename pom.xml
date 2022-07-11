@@ -28,7 +28,7 @@
         <spring.boot.version>2.6.3</spring.boot.version>
         <mysql.version>8.0.29</mysql.version>
         <druid.version>1.2.11</druid.version>
-        <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <knife4j.version>3.0.3</knife4j.version>
         <validator.version>6.2.0.Final</validator.version>
         <lombok.version>1.18.24</lombok.version>

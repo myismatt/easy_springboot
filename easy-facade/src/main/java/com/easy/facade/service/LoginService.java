@@ -8,7 +8,7 @@ import com.easy.facade.constants.RedisKey;
 import com.easy.facade.framework.config.KeyConfig;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.facade.framework.security.SecurityUtils;
-import com.easy.utils.encryption.RsaUtils;
+import com.easy.utils.encryption.DesUtils;
 import com.easy.utils.idUtils.IdUtils;
 import com.easy.utils.idUtils.SnowflakeIdUtils;
 import com.easy.utils.json.FastJsonUtils;
@@ -39,20 +39,20 @@ public class LoginService {
         this.redisUtils = redisUtils;
     }
 
-    public TokenInfo login(LoginParamDTO dto) {
+    public TokenInfo login(LoginParamDTO dto) throws Exception {
         // 验证用户
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 dto.getUsername(), dto.getPassword()));
         // 获取用户信息
         LoginUserDetails userDetails = (LoginUserDetails) authentication.getPrincipal();
         // 清除密码
-        userDetails.setPassword(null);
+        userDetails.getUserInfo().setPassword(null);
         // 过期时间+动态数/单位分钟
         int amount = 480 + IdUtils.randomFive();
         // 随机码
         String uid = SnowflakeIdUtils.getInstance().getNextId();
         // 加密用户信息
-        String userJson = RsaUtils.encrypt(FastJsonUtils.objectToJson(userDetails), KeyConfig.getRsaPublicKey());
+        String userJson = DesUtils.encryptByDes(FastJsonUtils.objectToJson(userDetails), KeyConfig.getDesKey());
         // 缓存用户信息
         redisUtils.setCacheObject(RedisKey.TOKEN_USERINFO_KEY + uid, userJson, amount, TimeUnit.MINUTES);
         // 生成 accessToken
@@ -62,7 +62,6 @@ public class LoginService {
     }
 
     public UserInfoVO getUserInfo() {
-        LoginUserDetails userDetails = SecurityUtils.getLoginUserInfo();
-        return new UserInfoVO();
+        return SecurityUtils.getLoginUserInfo().getUserInfo();
     }
 }

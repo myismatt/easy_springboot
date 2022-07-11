@@ -7,7 +7,7 @@ import com.easy.facade.enums.HttpStatus;
 import com.easy.facade.framework.config.KeyConfig;
 import com.easy.facade.framework.config.WhitelistProperties;
 import com.easy.facade.framework.redis.RedisUtils;
-import com.easy.utils.encryption.RsaUtils;
+import com.easy.utils.encryption.DesUtils;
 import com.easy.utils.io.ResponseUtils;
 import com.easy.utils.json.FastJsonUtils;
 import com.easy.utils.jwt.JwtUtils;
@@ -55,8 +55,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     chain.doFilter(request, response);
                     return;
                 }
-            }
-            else {
+            } else {
                 if (requestUrl.equals(url)) {
                     chain.doFilter(request, response);
                     return;
@@ -83,22 +82,21 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 获取账号唯一标识码
         String userKey = JwtUtils.getId(token);
         // 获取缓存中加密的用户数据
-        String encryptUserString = String.valueOf(redisUtils.getCacheObject(RedisKey.TOKEN_USERINFO_KEY + userKey));
+        String encryptUserString = redisUtils.getCacheObject(RedisKey.TOKEN_USERINFO_KEY + userKey);
         // 未获取到用户加密信息则表示登录过期或者被强制下线
         if (StringUtils.isBlank(encryptUserString)) {
             ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.TOKEN_EXPIRED));
             return;
         }
         // 解密并反序列化缓存信息
-        LoginUserDetails loginUser = FastJsonUtils.jsonToObject(RsaUtils.decrypt(encryptUserString, KeyConfig.getRsaPrivateKey()), LoginUserDetails.class);
+        LoginUserDetails loginUser = FastJsonUtils.jsonToObject(DesUtils.decryptByDes(encryptUserString, KeyConfig.getDesKey()), LoginUserDetails.class);
         //
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
-        else {
+        } else {
             ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.TOKEN_EXCEPTION));
             return;
         }

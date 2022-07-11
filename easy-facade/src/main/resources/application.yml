@@ -79,8 +79,6 @@ spring:
 mybatis-plus:
   typeAliasesPackage: com.free
   mapper-locations: classpath*:mapper/*Mapper.xml
-  #枚举扫描
-  typeEnumsPackage: com.easy.**.enums
   check-config-location: true
   configuration:
     #Mybatis二级缓存
@@ -115,4 +113,3 @@ whitelist:
     - /user/register
     - /login
     - /druid/**
-    - /**

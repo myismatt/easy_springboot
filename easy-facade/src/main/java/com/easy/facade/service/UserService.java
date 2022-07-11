@@ -9,13 +9,12 @@ import com.easy.facade.dao.UserMapper;
 import com.easy.facade.enums.AccountStatusEnum;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.idUtils.IdUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.easy.utils.lang.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 账号数据
@@ -30,13 +29,8 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private UserInfoService userInfoService;
     private RedisUtils redisUtils;
 
-    @Autowired
-    public void setUserInfoService(UserInfoService userInfoService) {
+    public UserService(UserInfoService userInfoService, RedisUtils redisUtils) {
         this.userInfoService = userInfoService;
-    }
-
-    @Autowired
-    public void setRedisUtils(RedisUtils redisUtils) {
         this.redisUtils = redisUtils;
     }
 
@@ -99,6 +93,23 @@ public class UserService extends ServiceImpl<UserMapper, User> {
             getUserKey();
         }
         return userKeyList.get(0);
+    }
+
+    /**
+     * 根据用户id获取用户菜单权限
+     *
+     * @param userId 用户id
+     * @return Set<String>
+     */
+    public Set<String> getUserMenu(String userId) {
+        List<String> perms = this.baseMapper.selectMenuByUserId(userId);
+        Set<String> permsSet = new HashSet<>();
+        for (String perm : perms) {
+            if (StringUtils.isNotEmpty(perm)) {
+                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+            }
+        }
+        return permsSet;
     }
 }
 

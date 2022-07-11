@@ -3,6 +3,7 @@ package com.easy.facade.beans.model;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.facade.beans.base.BaseEntity;
+import com.easy.facade.enums.YesOrNoEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -42,9 +43,9 @@ public class Role extends BaseEntity {
     private Integer roleSort;
 
     /**
-     * 角色状态（0正常 1停用）
+     * 是否启用（0停用;1正常）
      */
-    @TableField(value = "`status`")
-    @ApiModelProperty(value = "角色状态（0正常 1停用）")
-    private Integer status;
+    @TableField(value = "`enable`")
+    @ApiModelProperty(value = "是否启用（0停用;1正常）")
+    private YesOrNoEnum enable;
 }

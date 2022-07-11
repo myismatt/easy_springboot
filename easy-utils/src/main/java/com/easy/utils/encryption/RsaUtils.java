@@ -1,6 +1,5 @@
 package com.easy.utils.encryption;
 
-import com.easy.utils.idUtils.IdUtils;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.BadPaddingException;
@@ -36,8 +35,7 @@ public class RsaUtils {
         KeyPairGenerator keyPairGen = null;
         try {
             keyPairGen = KeyPairGenerator.getInstance("RSA");
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 
@@ -80,9 +78,8 @@ public class RsaUtils {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, pubKey);
             outStr = Base64.encodeBase64String(cipher.doFinal(str.getBytes(StandardCharsets.UTF_8)));
-        }
-        catch (InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException |
-               NoSuchPaddingException | NoSuchAlgorithmException e) {
+        } catch (InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException |
+                 NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         //RSA加密
@@ -111,28 +108,11 @@ public class RsaUtils {
             cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, priKey);
             outStr = new String(cipher.doFinal(inputByte));
-        }
-        catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchPaddingException | BadPaddingException |
-               IllegalBlockSizeException | InvalidKeyException e) {
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchPaddingException | BadPaddingException |
+                 IllegalBlockSizeException | InvalidKeyException e) {
             e.printStackTrace();
         }
         return outStr;
     }
-
-    public static void main(String[] args) {
-        //生成公钥和私钥
-        Map<Integer, String> keyMap = genKeyPair();
-        //加密字符串
-        String content = IdUtils.generate12Code();
-        ;
-        System.out.println("加密前内容:" + content);
-        System.out.println("随机生成的公钥为:" + keyMap.get(0));
-        System.out.println("随机生成的私钥为:" + keyMap.get(1));
-        String messageEn = encrypt(content, keyMap.get(0));
-        System.out.println("加密后的内容为:" + messageEn);
-        String messageDe = decrypt(messageEn, keyMap.get(1));
-        System.out.println("还原后的内容为:" + messageDe);
-    }
-
 
 }

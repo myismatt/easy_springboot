@@ -1,5 +1,6 @@
 package com.easy.facade.beans.vo;
 
+import com.easy.facade.enums.YesOrNoEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -45,10 +46,10 @@ public class RoleInfoVO implements Serializable {
     private Integer roleSort;
 
     /**
-     * 角色状态（0正常 1停用）
+     * 是否启用（0停用;1正常）
      */
-    @ApiModelProperty(value = "角色状态（0正常 1停用）")
-    private Integer status;
+    @ApiModelProperty(value = "是否启用（0停用;1正常）")
+    private YesOrNoEnum enable;
 
     /**
      * 备注

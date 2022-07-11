@@ -1,5 +1,6 @@
 package com.easy.facade.beans.entity;
 
+import com.easy.facade.beans.vo.UserInfoVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -36,39 +37,27 @@ public class LoginUserDetails implements UserDetails {
     private String username;
 
     /**
-     * 密码
-     */
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    /**
      * 权限列表
      */
     @ApiModelProperty(value = "权限列表")
     private Set<String> permissions;
 
+    /**
+     * 用户信息
+     */
+    @ApiModelProperty(value = "用户信息")
+    private UserInfoVO userInfo;
+
+
     public LoginUserDetails() {
     }
 
-    public LoginUserDetails(String id, String userKey, String username) {
-        this.id = id;
-        this.userKey = userKey;
-        this.username = username;
-    }
-
-    public LoginUserDetails(String id, String userKey, String username, Set<String> permissions) {
+    public LoginUserDetails(String id, String userKey, String username, Set<String> permissions, UserInfoVO userInfo) {
         this.id = id;
         this.userKey = userKey;
         this.username = username;
         this.permissions = permissions;
-    }
-
-    public LoginUserDetails(String id, String userKey, String username, String password, Set<String> permissions) {
-        this.id = id;
-        this.userKey = userKey;
-        this.username = username;
-        this.password = password;
-        this.permissions = permissions;
+        this.userInfo = userInfo;
     }
 
     @Override
@@ -78,7 +67,7 @@ public class LoginUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return userInfo.getPassword();
     }
 
     @Override
