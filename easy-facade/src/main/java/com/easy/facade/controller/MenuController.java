@@ -38,7 +38,7 @@ public class MenuController {
      * @param dto 查询参数
      * @return 集合数据
      */
-    @GetMapping(value = "list", headers = "Authorization")
+    @GetMapping(value = "query", headers = "Authorization")
     @ApiOperation(value = "列表", httpMethod = "GET")
     public ResultBean<List<Menu>> getList(MenuSearchDTO dto) {
         return ResultBean.success("查询成功", menuService.getList(dto));
