@@ -7,7 +7,6 @@ import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -32,21 +31,16 @@ public class MailService {
 
     public static final String DEFAULT_ENCODING = "UTF-8";
     private final Logger logger = LoggerFactory.getLogger(MailService.class);
-    private JavaMailSender mailSender;
-    private RedisUtils redisUtils;
+    private final JavaMailSender mailSender;
+    private final RedisUtils redisUtils;
     /**
      * 本身邮件的发送者，来自邮件配置
      */
     @Value("${spring.mail.username}")
     private String userName;
 
-    @Autowired
-    public void setMailSender(JavaMailSender mailSender) {
+    public MailService(JavaMailSender mailSender, RedisUtils redisUtils) {
         this.mailSender = mailSender;
-    }
-
-    @Autowired
-    public void setRedisUtils(RedisUtils redisUtils) {
         this.redisUtils = redisUtils;
     }
 
