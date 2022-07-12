@@ -98,4 +98,24 @@
         and r.enable = '1'
         and ur.user_id = #{userId}
     </select>
+
+    <update id="updateUserInfoById">
+        UPDATE easy_user_info ui
+        JOIN easy_user u ON ui.user_id = u.id
+        <set>
+            <if test="dto.nickname != null and dto.nickname != ''">
+                ui.nickname = #{dto.nickname},
+            </if>
+            <if test="dto.phone != null and dto.phone != ''">
+                u.phone=#{dto.phone},
+            </if>
+            <if test="dto.email != null and dto.email != ''">
+                u.email=#{dto.email},
+            </if>
+            <if test="dto.accountStatus != null">
+                u.account_status=#{dto.accountStatus},
+            </if>
+        </set>
+        WHERE u.id = #{dto.userId};
+    </update>
 </mapper>

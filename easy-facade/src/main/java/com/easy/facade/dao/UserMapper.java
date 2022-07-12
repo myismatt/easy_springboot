@@ -1,6 +1,7 @@
 package com.easy.facade.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.easy.facade.beans.dto.UserUpdateDTO;
 import com.easy.facade.beans.model.User;
 import com.easy.facade.beans.vo.UserInfoVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -41,4 +42,11 @@ public interface UserMapper extends BaseMapper<User> {
      * @return List<String>
      */
     List<String> selectMenuByUserId(@Param("userId") String userId);
+
+    /**
+     * 根据用户id更新用户数据
+     *
+     * @param dto 入参
+     */
+    void updateUserInfoById(@Param("dto") UserUpdateDTO dto);
 }

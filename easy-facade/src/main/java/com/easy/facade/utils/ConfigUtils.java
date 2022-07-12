@@ -1,7 +1,7 @@
 package com.easy.facade.utils;
 
 import com.easy.facade.beans.vo.ConfigVO;
-import com.easy.facade.constants.RedisKeyConsts;
+import com.easy.facade.constant.RedisKeyConsts;
 import com.easy.facade.enums.YesOrNoEnum;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.spring.SpringUtils;

@@ -15,8 +15,8 @@ public enum MenuTypeEnum implements IEnum<Integer> {
      * 路由菜单类型
      */
     MENU(0, "目录"),
-    page(1, "页面"),
-    button(2, "按钮");
+    PAGE(1, "页面"),
+    BUTTON(2, "按钮");
 
     private final Integer value;
     private final String desc;

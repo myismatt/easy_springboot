@@ -8,6 +8,7 @@ import com.easy.facade.beans.model.Menu;
 import com.easy.facade.service.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,6 +39,7 @@ public class MenuController {
      * @param dto 查询参数
      * @return 集合数据
      */
+    @PreAuthorize("@auth.hasKey('admin:menu:list')")
     @GetMapping(value = "query", headers = "Authorization")
     @ApiOperation(value = "列表", httpMethod = "GET")
     public ResultBean<List<Menu>> getList(MenuSearchDTO dto) {
@@ -50,6 +52,7 @@ public class MenuController {
      * @param dto 查询参数
      * @return 分页数据
      */
+    @PreAuthorize("@auth.hasKey('admin:menu:page')")
     @GetMapping(value = "page", headers = "Authorization")
     @ApiOperation(value = "分页", httpMethod = "GET")
     public ResultBean<IPage<Menu>> getPage(MenuSearchDTO dto) {
@@ -61,6 +64,7 @@ public class MenuController {
      *
      * @return 操作结果
      */
+    @PreAuthorize("@auth.hasKey('admin:menu:add')")
     @PostMapping(value = "add", headers = "Authorization")
     @ApiOperation(value = "新增", httpMethod = "POST")
     public ResultBean<String> addMenu(@Valid @RequestBody MenuDTO dto) {

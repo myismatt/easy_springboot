@@ -105,7 +105,7 @@ knife4j:
   production: false
 
 # 放行名单
-allowList:
+allow-list:
   ignoreUrl:
     - /doc.html
     - /webjars/**

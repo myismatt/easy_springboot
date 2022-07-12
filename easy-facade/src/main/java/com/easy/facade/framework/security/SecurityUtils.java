@@ -1,7 +1,7 @@
 package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.entity.LoginUserDetails;
-import com.easy.facade.constants.SystemConsts;
+import com.easy.facade.constant.SystemConsts;
 import com.easy.facade.framework.exception.CustomException;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;

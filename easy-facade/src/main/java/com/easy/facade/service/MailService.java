@@ -2,7 +2,7 @@ package com.easy.facade.service;
 
 import cn.hutool.core.util.RandomUtil;
 import com.easy.facade.beans.entity.EmailActivationCodeMessage;
-import com.easy.facade.constants.RedisKeyConsts;
+import com.easy.facade.constant.RedisKeyConsts;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.lang.StringUtils;
 import org.slf4j.Logger;

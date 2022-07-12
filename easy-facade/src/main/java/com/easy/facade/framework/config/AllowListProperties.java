@@ -13,7 +13,7 @@ import java.util.List;
  * @Date 2021/5/24 15:01
  */
 @Configuration
-@ConfigurationProperties(prefix = "allowList")
+@ConfigurationProperties(prefix = "allow-list")
 public class AllowListProperties {
     /**
      * 白名单url集合

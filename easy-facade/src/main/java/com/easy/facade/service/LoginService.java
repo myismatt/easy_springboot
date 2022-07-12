@@ -4,7 +4,7 @@ import com.easy.facade.beans.dto.LoginParamDTO;
 import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.beans.entity.TokenInfo;
 import com.easy.facade.beans.vo.UserInfoVO;
-import com.easy.facade.constants.RedisKeyConsts;
+import com.easy.facade.constant.RedisKeyConsts;
 import com.easy.facade.framework.config.KeyConfig;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.facade.framework.security.SecurityUtils;

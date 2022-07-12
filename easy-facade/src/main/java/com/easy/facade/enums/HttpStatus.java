@@ -1,7 +1,7 @@
 package com.easy.facade.enums;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
-import com.easy.facade.constants.HttpCode;
+import com.easy.facade.constant.HttpCode;
 
 /**
  * 响应状态枚举

@@ -28,13 +28,13 @@ public class GlobalExceptionHandler {
     private final static Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
-     * 基础异常
+     * 自定义异常
      */
-    @ExceptionHandler(Exception.class)
-    public ResultBean<String> handleException(Exception e) {
-        logger.error("基础异常-> e={}", e.getMessage());
+    @ExceptionHandler(value = CustomException.class)
+    public ResultBean<String> handleCustom(CustomException e) {
+        logger.error("自定义异常拦截-> e={}", e.getMessage());
         e.printStackTrace();
-        return ResultBean.custom(HttpStatus.ERROR);
+        return e.getResult();
     }
 
     /**
@@ -45,16 +45,6 @@ public class GlobalExceptionHandler {
         logger.error("权限异常拦截-> e={}", e.getMessage());
         e.printStackTrace();
         return ResultBean.custom(HttpStatus.UNAUTHORIZED);
-    }
-
-    /**
-     * 自定义异常
-     */
-    @ExceptionHandler(value = CustomException.class)
-    public ResultBean<String> handleCustom(CustomException e) {
-        logger.error("自定义异常拦截-> e={}", e.getMessage());
-        e.printStackTrace();
-        return e.getResult();
     }
 
     /**

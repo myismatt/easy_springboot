@@ -25,12 +25,17 @@ public class UserRole extends BaseEntity {
      */
     @TableField(value = "user_id")
     @ApiModelProperty(value = "用户ID")
-    private Long userId;
+    private String userId;
 
     /**
      * 角色ID
      */
     @TableField(value = "role_id")
     @ApiModelProperty(value = "角色ID")
-    private Long roleId;
+    private String roleId;
+
+    public UserRole(String userId, String roleId) {
+        this.userId = userId;
+        this.roleId = roleId;
+    }
 }

@@ -1,4 +1,4 @@
-package com.easy.facade.constants;
+package com.easy.facade.constant;
 
 /**
  * 系统常量

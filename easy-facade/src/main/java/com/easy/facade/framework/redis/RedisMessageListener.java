@@ -1,6 +1,6 @@
 package com.easy.facade.framework.redis;
 
-import com.easy.facade.constants.RedisListenerTopicConsts;
+import com.easy.facade.constant.RedisListenerTopicConsts;
 import com.easy.facade.listenner.EmailActivationCodeListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

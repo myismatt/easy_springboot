@@ -1,6 +1,6 @@
 package com.easy.facade.beans.entity;
 
-import com.easy.facade.constants.SystemConsts;
+import com.easy.facade.constant.SystemConsts;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;

@@ -1,6 +1,5 @@
 package com.easy.facade.beans.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.easy.facade.enums.MenuTypeEnum;
 import com.easy.facade.enums.YesOrNoEnum;
 import io.swagger.annotations.ApiModel;
@@ -31,7 +30,6 @@ public class MenuDTO {
     /**
      * 父菜单ID
      */
-    @TableField(value = "parent_id")
     @ApiModelProperty(value = "父菜单ID")
     private String parentId;
 
@@ -64,7 +62,7 @@ public class MenuDTO {
     /**
      * 菜单类型（M目录 C菜单 F按钮）
      */
-    @NotBlank(message = "菜单类型不能为空")
+    @NotNull(message = "菜单类型不能为空")
     @ApiModelProperty(value = "菜单类型")
     private MenuTypeEnum menuType;
 

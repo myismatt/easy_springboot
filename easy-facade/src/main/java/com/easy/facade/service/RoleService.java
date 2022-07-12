@@ -51,10 +51,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
         BeanUtils.copyProperties(dto, newRole);
         save(newRole);
         if (StringUtils.isNotEmpty(dto.getMenuIdList())) {
-            List<RoleMenu> roleMenuList = new ArrayList<>();
-            dto.getMenuIdList().parallelStream().forEach(k -> {
-                roleMenuList.add(new RoleMenu(k, newRole.getId()));
-            });
+            List<RoleMenu> roleMenuList = dto.getMenuIdList().parallelStream().map(menuId -> new RoleMenu(newRole.getId(), menuId)).collect(Collectors.toList());
             roleMenuService.saveBatch(roleMenuList);
         }
     }

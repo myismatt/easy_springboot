@@ -1,20 +1,27 @@
 package com.easy.facade.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.facade.beans.dto.UserUpdateDTO;
 import com.easy.facade.beans.entity.EmailActivationCodeMessage;
 import com.easy.facade.beans.model.User;
 import com.easy.facade.beans.model.UserInfo;
-import com.easy.facade.constants.RedisListenerTopicConsts;
+import com.easy.facade.beans.model.UserRole;
+import com.easy.facade.constant.RedisListenerTopicConsts;
 import com.easy.facade.dao.UserMapper;
 import com.easy.facade.enums.AccountStatusEnum;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.idUtils.IdUtils;
 import com.easy.utils.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 账号数据
@@ -26,11 +33,13 @@ import java.util.*;
 @Service
 public class UserService extends ServiceImpl<UserMapper, User> {
 
-    private UserInfoService userInfoService;
-    private RedisUtils redisUtils;
+    private final UserInfoService userInfoService;
+    private final UserRoleService userRoleService;
+    private final RedisUtils redisUtils;
 
-    public UserService(UserInfoService userInfoService, RedisUtils redisUtils) {
+    public UserService(UserInfoService userInfoService, UserRoleService userRoleService, RedisUtils redisUtils) {
         this.userInfoService = userInfoService;
+        this.userRoleService = userRoleService;
         this.redisUtils = redisUtils;
     }
 
@@ -103,14 +112,16 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      */
     public Set<String> getUserMenu(String userId) {
         List<String> perms = this.baseMapper.selectMenuByUserId(userId);
-        Set<String> permsSet = new HashSet<>();
-        for (String perm : perms) {
-            if (StringUtils.isNotEmpty(perm)) {
-                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
-            }
+        return perms.stream().filter(StringUtils::isNotEmpty).flatMap(perm -> Arrays.stream(perm.trim().split(","))).collect(Collectors.toSet());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUserInfo(UserUpdateDTO dto) {
+        this.baseMapper.updateUserInfoById(dto);
+        // 处理角色
+        if (CollectionUtils.isNotEmpty(dto.getRoleIdList())) {
+            List<UserRole> userRoleList = dto.getRoleIdList().parallelStream().map(roleId -> new UserRole(dto.getUserId(), roleId)).collect(Collectors.toList());
+            userRoleService.saveBatch(userRoleList);
         }
-        return permsSet;
     }
 }
-
-

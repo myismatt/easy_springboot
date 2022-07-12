@@ -30,7 +30,7 @@ public class PermissionCheckService {
             return false;
         }
         LoginUserDetails loginUser = SecurityUtils.getLoginUserInfo();
-        if (CollectionUtils.isEmpty(loginUser.getAuthorities())) {
+        if (CollectionUtils.isEmpty(loginUser.getPermissions())) {
             return false;
         }
         return hasPermissions(loginUser.getPermissions(), permission);
