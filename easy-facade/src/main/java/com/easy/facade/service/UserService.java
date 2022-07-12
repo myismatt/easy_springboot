@@ -36,11 +36,13 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private final UserInfoService userInfoService;
     private final UserRoleService userRoleService;
     private final RedisUtils redisUtils;
+    private final MailService mailService;
 
-    public UserService(UserInfoService userInfoService, UserRoleService userRoleService, RedisUtils redisUtils) {
+    public UserService(UserInfoService userInfoService, UserRoleService userRoleService, RedisUtils redisUtils, MailService mailService) {
         this.userInfoService = userInfoService;
         this.userRoleService = userRoleService;
         this.redisUtils = redisUtils;
+        this.mailService = mailService;
     }
 
     /**
@@ -123,5 +125,14 @@ public class UserService extends ServiceImpl<UserMapper, User> {
             List<UserRole> userRoleList = dto.getRoleIdList().parallelStream().map(roleId -> new UserRole(dto.getUserId(), roleId)).collect(Collectors.toList());
             userRoleService.saveBatch(userRoleList);
         }
+    }
+
+    public void sendActivationCode(User user) {
+        EmailActivationCodeMessage emailActivationCodeMessage = new EmailActivationCodeMessage();
+        emailActivationCodeMessage.setUserId(user.getId());
+        emailActivationCodeMessage.setUsername(user.getUsername());
+        emailActivationCodeMessage.setUserEmail(new String[]{user.getEmail()});
+        // 发送邮件
+        mailService.sendActivationCode(emailActivationCodeMessage);
     }
 }

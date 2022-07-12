@@ -61,7 +61,7 @@ public class MailService {
         // 存进redis
         redisUtils.setCacheObject(RedisKeyConsts.EMAIL_ACTIVATION_CODE + message.getUserId(), activationCode, 2, TimeUnit.HOURS);
         // 发送邮件
-        sendSimpleTextMailActual("账号注册成功, 请激活您的账号!", "恭喜您 " + message.getUsername() + " 注册成功, 请你登录账号输入激活码: " + activationCode + "激活您的账号! 激活码2小时内有效! ", message.getUserEmail(), null, null, null);
+        sendSimpleTextMailActual("激活您的账号!", message.getUsername() + " , 请你登录账号输入激活码: " + activationCode + " 激活您的账号! 激活码2小时内有效! ", message.getUserEmail(), null, null, null);
     }
 
     /**

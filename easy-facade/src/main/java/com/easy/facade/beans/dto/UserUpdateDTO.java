@@ -42,6 +42,7 @@ public class UserUpdateDTO {
     /**
      * 邮箱
      */
+    @NotBlank(message = "邮箱不能为空")
     @ApiModelProperty(value = "邮箱")
     private String email;
 
