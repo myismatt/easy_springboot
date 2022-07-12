@@ -60,6 +60,9 @@ public class RegisterController {
     @ApiOperation(value = "发送激活码", httpMethod = "GET")
     public ResultBean<String> sendActivationCode(@PathVariable String username) {
         User user = userService.lambdaQuery().eq(User::getUsername, username).one();
+        if (user == null) {
+            return ResultBean.error("账号不存在");
+        }
         if (!user.getAccountStatus().equals(AccountStatusEnum.INACTIVATED)) {
             return ResultBean.success("账号无须激活");
         }
