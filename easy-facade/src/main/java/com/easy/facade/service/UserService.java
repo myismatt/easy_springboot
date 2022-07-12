@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.facade.beans.entity.EmailActivationCodeMessage;
 import com.easy.facade.beans.model.User;
 import com.easy.facade.beans.model.UserInfo;
-import com.easy.facade.constants.RedisListenerTopic;
+import com.easy.facade.constants.RedisListenerTopicConsts;
 import com.easy.facade.dao.UserMapper;
 import com.easy.facade.enums.AccountStatusEnum;
 import com.easy.facade.framework.redis.RedisUtils;
@@ -71,7 +71,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         // 保存用户详情
         userInfoService.save(newUserInfo);
         // 发送redis消息, 发送激活码邮件 @link EmailActivationCodeListener.class
-        redisUtils.pushListenerMessage(RedisListenerTopic.EMAIL_ACTIVATION_CODE_TOPIC, new EmailActivationCodeMessage(newUserInfo.getUserId(), newUser.getUsername(), new String[]{newUser.getEmail()}));
+        redisUtils.pushListenerMessage(RedisListenerTopicConsts.EMAIL_ACTIVATION_CODE_TOPIC, new EmailActivationCodeMessage(newUserInfo.getUserId(), newUser.getUsername(), new String[]{newUser.getEmail()}));
     }
 
     /**

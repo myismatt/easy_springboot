@@ -7,7 +7,7 @@ package com.easy.facade.constants;
  * @Author Matt
  * @Date 2022/6/22 14:11
  */
-public final class RedisKey {
+public final class RedisKeyConsts {
     /**
      * 邮件激活码key
      */
@@ -23,7 +23,7 @@ public final class RedisKey {
      */
     public static final String CONFIG_LIST_KEY = "system_config_list_key:";
 
-    private RedisKey() {
+    private RedisKeyConsts() {
         throw new IllegalAccessError("RedisKey.class");
     }
 }

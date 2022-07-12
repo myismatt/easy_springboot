@@ -1,6 +1,6 @@
 package com.easy.facade.beans.entity;
 
-import com.easy.facade.constants.EasyConstants;
+import com.easy.facade.constants.SystemConsts;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -24,7 +24,7 @@ public class TokenInfo {
     private String responseId;
 
     public TokenInfo(String token, String responseId) {
-        this.token = EasyConstants.TOKEN_PREFIX + token;
+        this.token = SystemConsts.TOKEN_PREFIX + token;
         this.responseId = responseId;
     }
 }

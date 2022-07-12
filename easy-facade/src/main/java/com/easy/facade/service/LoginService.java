@@ -4,7 +4,7 @@ import com.easy.facade.beans.dto.LoginParamDTO;
 import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.beans.entity.TokenInfo;
 import com.easy.facade.beans.vo.UserInfoVO;
-import com.easy.facade.constants.RedisKey;
+import com.easy.facade.constants.RedisKeyConsts;
 import com.easy.facade.framework.config.KeyConfig;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.facade.framework.security.SecurityUtils;
@@ -54,7 +54,7 @@ public class LoginService {
         // 加密用户信息
         String userJson = DesUtils.encryptByDes(FastJsonUtils.objectToJson(userDetails), KeyConfig.getDesKey());
         // 缓存用户信息
-        redisUtils.setCacheObject(RedisKey.TOKEN_USERINFO_KEY + uid, userJson, amount, TimeUnit.MINUTES);
+        redisUtils.setCacheObject(RedisKeyConsts.TOKEN_USERINFO_KEY + uid, userJson, amount, TimeUnit.MINUTES);
         // 生成 accessToken
         String accessToken = JwtUtils.generateToken(userDetails.getId(), userDetails.getUsername(), userDetails.getUserKey(), uid, amount);
         return new TokenInfo(accessToken, uid);

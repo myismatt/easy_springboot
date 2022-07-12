@@ -104,8 +104,8 @@ knife4j:
   cors: false
   production: false
 
-# 白名单
-whitelist:
+# 放行名单
+allowList:
   ignoreUrl:
     - /doc.html
     - /webjars/**

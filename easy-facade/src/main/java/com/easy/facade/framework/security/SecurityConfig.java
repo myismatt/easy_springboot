@@ -1,7 +1,7 @@
 package com.easy.facade.framework.security;
 
 import com.easy.facade.framework.annotation.IgnoreAuth;
-import com.easy.facade.framework.config.WhitelistProperties;
+import com.easy.facade.framework.config.AllowListProperties;
 import com.easy.utils.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +41,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 授权白名单
      */
-    private final WhitelistProperties whitelistProperties;
+    private final AllowListProperties allowListProperties;
     private final EasyAuthenticationEntryPoint authenticationEntryPoint;
     private final EasyAccessDeniedHandler accessDeniedHandler;
     private final JwtAuthenticationTokenFilter authenticationTokenFilter;
 
     private final RequestMappingHandlerMapping requestMappingHandlerMapping;
 
-    public SecurityConfig(WhitelistProperties whitelistProperties, EasyAuthenticationEntryPoint authenticationEntryPoint, EasyAccessDeniedHandler accessDeniedHandler, JwtAuthenticationTokenFilter authenticationTokenFilter, RequestMappingHandlerMapping requestMappingHandlerMapping) {
-        this.whitelistProperties = whitelistProperties;
+    public SecurityConfig(AllowListProperties allowListProperties, EasyAuthenticationEntryPoint authenticationEntryPoint, EasyAccessDeniedHandler accessDeniedHandler, JwtAuthenticationTokenFilter authenticationTokenFilter, RequestMappingHandlerMapping requestMappingHandlerMapping) {
+        this.allowListProperties = allowListProperties;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationTokenFilter = authenticationTokenFilter;
@@ -75,11 +75,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 关闭session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // 白名单
-        for (String ignoreUrl : whitelistProperties.getIgnoreUrl()) {
+        for (String ignoreUrl : allowListProperties.getIgnoreUrl()) {
             http.authorizeRequests().antMatchers(ignoreUrl).permitAll();
         }
         // 打印白名单日志
-        logger.info("URL WHITELIST:{}", whitelistProperties.getIgnoreUrl().toString());
+        logger.info("URL WHITELIST:{}", allowListProperties.getIgnoreUrl().toString());
         // 权限配置
         http.authorizeRequests()
                 // 跨域预检请求

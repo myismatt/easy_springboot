@@ -145,7 +145,7 @@ public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
         }
         long totalTime = System.currentTimeMillis() - beginTime;
         if (totalTime > 3000) {
-            throw new RuntimeException(object.getClass() + " serialize time: " + TimeUtils.formatDateAgo(totalTime));
+            throw new RuntimeException(object.getClass() + " serialize time: " + totalTime);
         }
         return bytes;
     }
@@ -173,7 +173,7 @@ public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
         }
         long totalTime = System.currentTimeMillis() - beginTime;
         if (totalTime > 3000) {
-            throw new RuntimeException(object.getClass() + " unserialize time: " + TimeUtils.formatDateAgo(totalTime));
+            throw new RuntimeException(object.getClass() + " unSerialize time: " + totalTime);
         }
         return object;
     }

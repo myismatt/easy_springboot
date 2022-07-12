@@ -2,10 +2,10 @@ package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.entity.LoginUserDetails;
-import com.easy.facade.constants.RedisKey;
+import com.easy.facade.constants.RedisKeyConsts;
 import com.easy.facade.enums.HttpStatus;
+import com.easy.facade.framework.config.AllowListProperties;
 import com.easy.facade.framework.config.KeyConfig;
-import com.easy.facade.framework.config.WhitelistProperties;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.encryption.DesUtils;
 import com.easy.utils.io.ResponseUtils;
@@ -34,11 +34,11 @@ import java.io.IOException;
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final RedisUtils redisUtils;
-    private final WhitelistProperties whitelistProperties;
+    private final AllowListProperties allowListProperties;
 
-    public JwtAuthenticationTokenFilter(RedisUtils redisUtils, WhitelistProperties whitelistProperties) {
+    public JwtAuthenticationTokenFilter(RedisUtils redisUtils, AllowListProperties allowListProperties) {
         this.redisUtils = redisUtils;
-        this.whitelistProperties = whitelistProperties;
+        this.allowListProperties = allowListProperties;
     }
 
 
@@ -48,7 +48,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 获取请求地址
         String requestUrl = request.getRequestURI();
         // 放行接口不校验token
-        for (String url : whitelistProperties.getIgnoreUrl()) {
+        for (String url : allowListProperties.getIgnoreUrl()) {
             // 模糊匹配单独处理
             if (url.endsWith("/**") || url.endsWith("/*")) {
                 if (requestUrl.startsWith(url.replace("/**", ""))) {
@@ -82,7 +82,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 获取账号唯一标识码
         String userKey = JwtUtils.getId(token);
         // 获取缓存中加密的用户数据
-        String encryptUserString = redisUtils.getCacheObject(RedisKey.TOKEN_USERINFO_KEY + userKey);
+        String encryptUserString = redisUtils.getCacheObject(RedisKeyConsts.TOKEN_USERINFO_KEY + userKey);
         // 未获取到用户加密信息则表示登录过期或者被强制下线
         if (StringUtils.isBlank(encryptUserString)) {
             ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.TOKEN_EXPIRED));

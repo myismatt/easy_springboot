@@ -1,7 +1,7 @@
 package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.entity.LoginUserDetails;
-import com.easy.facade.constants.EasyConstants;
+import com.easy.facade.constants.SystemConsts;
 import com.easy.facade.framework.exception.CustomException;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,9 +27,9 @@ public class SecurityUtils {
      * @return token
      */
     public static String getToken(HttpServletRequest request) {
-        String token = request.getHeader(EasyConstants.TOKEN_HEADER);
-        if (StringUtils.isNotBlank(token) && token.startsWith(EasyConstants.TOKEN_PREFIX)) {
-            return token.replace(EasyConstants.TOKEN_PREFIX, "");
+        String token = request.getHeader(SystemConsts.TOKEN_HEADER);
+        if (StringUtils.isNotBlank(token) && token.startsWith(SystemConsts.TOKEN_PREFIX)) {
+            return token.replace(SystemConsts.TOKEN_PREFIX, "");
         }
         return null;
     }

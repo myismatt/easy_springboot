@@ -1,7 +1,7 @@
 package com.easy.facade.utils;
 
 import com.easy.facade.beans.vo.ConfigVO;
-import com.easy.facade.constants.RedisKey;
+import com.easy.facade.constants.RedisKeyConsts;
 import com.easy.facade.enums.YesOrNoEnum;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.spring.SpringUtils;
@@ -21,7 +21,7 @@ public class ConfigUtils {
     /**
      * 配置参数缓存键
      */
-    public static final String CONFIG_LIST_KEY = RedisKey.CONFIG_LIST_KEY;
+    public static final String CONFIG_LIST_KEY = RedisKeyConsts.CONFIG_LIST_KEY;
 
     private static ConfigUtils configUtils = null;
 

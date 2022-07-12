@@ -1,7 +1,7 @@
 package com.easy.utils.reflect;
 
 import cn.hutool.core.convert.Convert;
-import com.easy.utils.date.DateUtils;
+import com.easy.utils.date.DateTool;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -151,7 +151,7 @@ public class ReflectUtils {
                     }
                     else if (cs[i] == Date.class) {
                         if (args[i] instanceof String) {
-                            args[i] = DateUtils.parseDate(args[i]);
+                            args[i] = DateTool.parseDate(args[i]);
                         }
                         else {
                             args[i] = DateUtil.getJavaDate((Double) args[i]);

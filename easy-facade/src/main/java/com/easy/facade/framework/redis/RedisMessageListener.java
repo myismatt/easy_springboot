@@ -1,6 +1,6 @@
 package com.easy.facade.framework.redis;
 
-import com.easy.facade.constants.RedisListenerTopic;
+import com.easy.facade.constants.RedisListenerTopicConsts;
 import com.easy.facade.listenner.EmailActivationCodeListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +33,7 @@ public class RedisMessageListener {
         container.setConnectionFactory(redisConnectionFactory);
         //将消息侦听器添加到（可能正在运行的）容器中。 如果容器正在运行，则侦听器会尽快开始接收（匹配）消息。
         // 邮件激活码服务 订阅了 emailActivationCode一个频道
-        container.addMessageListener(emailActivationCodeListener, new PatternTopic(RedisListenerTopic.EMAIL_ACTIVATION_CODE_TOPIC));
+        container.addMessageListener(emailActivationCodeListener, new PatternTopic(RedisListenerTopicConsts.EMAIL_ACTIVATION_CODE_TOPIC));
         return container;
     }
 }

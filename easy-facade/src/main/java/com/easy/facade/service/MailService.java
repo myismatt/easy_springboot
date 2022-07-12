@@ -2,7 +2,7 @@ package com.easy.facade.service;
 
 import cn.hutool.core.util.RandomUtil;
 import com.easy.facade.beans.entity.EmailActivationCodeMessage;
-import com.easy.facade.constants.RedisKey;
+import com.easy.facade.constants.RedisKeyConsts;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.lang.StringUtils;
 import org.slf4j.Logger;
@@ -59,7 +59,7 @@ public class MailService {
         // 随机生成8位随机数
         String activationCode = RandomUtil.randomNumbers(8);
         // 存进redis
-        redisUtils.setCacheObject(RedisKey.EMAIL_ACTIVATION_CODE + message.getUserId(), activationCode, 2, TimeUnit.HOURS);
+        redisUtils.setCacheObject(RedisKeyConsts.EMAIL_ACTIVATION_CODE + message.getUserId(), activationCode, 2, TimeUnit.HOURS);
         // 发送邮件
         sendSimpleTextMailActual("账号注册成功, 请激活您的账号!", "恭喜您 " + message.getUsername() + " 注册成功, 请你登录账号输入激活码: " + activationCode + "激活您的账号! 激活码2小时内有效! ", message.getUserEmail(), null, null, null);
     }
