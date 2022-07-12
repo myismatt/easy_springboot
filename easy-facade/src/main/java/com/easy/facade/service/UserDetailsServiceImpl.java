@@ -43,7 +43,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } else {
             throw new CustomException("账号不存在");
         }
-        // TODO 获取用户角色以及权限
         return loadLoginUser(userInfo);
     }
 

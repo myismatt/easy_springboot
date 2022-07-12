@@ -23,7 +23,7 @@ public class ConfigUtils {
      */
     public static final String CONFIG_LIST_KEY = RedisKeyConsts.CONFIG_LIST_KEY;
 
-    private static ConfigUtils configUtils = null;
+    private static volatile ConfigUtils configUtils = null;
 
 
     private ConfigUtils() {
@@ -46,7 +46,7 @@ public class ConfigUtils {
      * 获取系统参数缓存
      */
     public List<ConfigVO> getConfigList() {
-        return getCache(CONFIG_LIST_KEY);
+        return getCache();
     }
 
     /**
@@ -55,7 +55,7 @@ public class ConfigUtils {
      * @param data 数据对象
      */
     public void setConfigList(Object data) {
-        setCache(CONFIG_LIST_KEY, data);
+        setCache(data);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ConfigUtils {
     public void addConfigList(ConfigVO data) {
         List<ConfigVO> cacheList = getInstance().getConfigList();
         cacheList.add(data);
-        setCache(CONFIG_LIST_KEY, cacheList);
+        setCache(cacheList);
     }
 
     /**
@@ -77,7 +77,7 @@ public class ConfigUtils {
     public void updateConfig(ConfigVO data) {
         List<ConfigVO> cacheList = getInstance().getConfigList();
         List<ConfigVO> oldList = cacheList.parallelStream().filter(config -> config.getId().equals(data.getId())).collect(Collectors.toList());
-        if (oldList != null || oldList.size() > 0) {
+        if (oldList.size() > 0) {
             cacheList.removeAll(oldList);
         }
         // 如果是设置为系统枚举
@@ -96,7 +96,7 @@ public class ConfigUtils {
     public void delConfig(List<String> ids) {
         List<ConfigVO> cacheList = getInstance().getConfigList();
         List<ConfigVO> oldList = cacheList.parallelStream().filter(config -> ids.contains(config.getId())).collect(Collectors.toList());
-        if (oldList != null || oldList.size() > 0) {
+        if (oldList.size() > 0) {
             cacheList.removeAll(oldList);
             setConfigList(cacheList);
         }
@@ -105,22 +105,20 @@ public class ConfigUtils {
     /**
      * 设置redis缓存
      *
-     * @param key  key
      * @param data 数据对象
      */
-    private void setCache(String key, Object data) {
-        SpringUtils.getBean(RedisUtils.class).setCacheObject(key, data);
+    private void setCache(Object data) {
+        SpringUtils.getBean(RedisUtils.class).setCacheObject(ConfigUtils.CONFIG_LIST_KEY, data);
     }
 
     /**
      * 获取缓存
      *
-     * @param key key
      * @param <T> 对象
      * @return 缓存
      */
-    private <T> T getCache(String key) {
-        return SpringUtils.getBean(RedisUtils.class).getCacheObject(key);
+    private <T> T getCache() {
+        return SpringUtils.getBean(RedisUtils.class).getCacheObject(ConfigUtils.CONFIG_LIST_KEY);
     }
 
 
