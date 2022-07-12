@@ -8,7 +8,10 @@ package com.easy.facade.constant;
  * @Date 2022/6/24 11:46
  */
 public final class SystemConsts {
-
+    /**
+     * 超级管理员key
+     */
+    public final static String ADMIN_KEY = "admin";
     /**
      * token 请求头
      */

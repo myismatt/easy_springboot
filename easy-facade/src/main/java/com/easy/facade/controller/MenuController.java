@@ -39,7 +39,7 @@ public class MenuController {
      * @param dto 查询参数
      * @return 集合数据
      */
-    @PreAuthorize("@auth.hasKey('admin:menu:list')")
+    @PreAuthorize("@auth.hasKey('admin:menu:query')")
     @GetMapping(value = "query", headers = "Authorization")
     @ApiOperation(value = "列表", httpMethod = "GET")
     public ResultBean<List<Menu>> getList(MenuSearchDTO dto) {

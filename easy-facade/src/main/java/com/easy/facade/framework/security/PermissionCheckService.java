@@ -2,10 +2,12 @@ package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.beans.vo.RoleInfoVO;
+import com.easy.facade.constant.SystemConsts;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -29,7 +31,11 @@ public class PermissionCheckService {
         if (StringUtils.isEmpty(permission)) {
             return false;
         }
+        // 获取登录信息
         LoginUserDetails loginUser = SecurityUtils.getLoginUserInfo();
+        if (Objects.equals(loginUser.getUserKey(), SystemConsts.ADMIN_KEY)) {
+            return true;
+        }
         if (CollectionUtils.isEmpty(loginUser.getPermissions())) {
             return false;
         }
@@ -58,16 +64,13 @@ public class PermissionCheckService {
             return false;
         }
         LoginUserDetails loginUser = SecurityUtils.getLoginUserInfo();
+        if (Objects.equals(loginUser.getUserKey(), SystemConsts.ADMIN_KEY)) {
+            return true;
+        }
         if (CollectionUtils.isEmpty(loginUser.getUserInfo().getRoleList())) {
             return false;
         }
-        for (RoleInfoVO roleInfo : loginUser.getUserInfo().getRoleList()) {
-            String roleKey = roleInfo.getRoleKey();
-            if (roleKey.equals(StringUtils.trim(role))) {
-                return true;
-            }
-        }
-        return false;
+        return loginUser.getUserInfo().getRoleList().stream().map(RoleInfoVO::getRoleKey).anyMatch(roleKey -> roleKey.equals(StringUtils.trim(role)));
     }
 
 }

@@ -6,6 +6,7 @@ import com.easy.facade.beans.vo.RoleInfoVO;
 import com.easy.facade.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -57,6 +58,7 @@ public class RoleController {
      *
      * @return 操作结果
      */
+    @PreAuthorize("@auth.hasKey('admin:role:add')")
     @PostMapping(value = "add", headers = "Authorization")
     @ApiOperation(value = "新增角色", httpMethod = "POST")
     public ResultBean<String> addRole(@Valid @RequestBody RoleDTO dto) {

@@ -5,6 +5,7 @@ import com.easy.facade.beans.dto.UserUpdateDTO;
 import com.easy.facade.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("@auth.hasKey('admin:user:update')")
     @PutMapping(value = "update", headers = "Authorization")
     @ApiOperation(value = "更新", httpMethod = "PUT")
     public ResultBean<String> updateUserInfo(@Valid @RequestBody UserUpdateDTO dto) {
