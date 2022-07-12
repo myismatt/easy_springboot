@@ -37,8 +37,7 @@ public class RegisterController {
         }
         try {
             userService.registerNewUser(dto.getUsername(), dto.getPassword(), dto.getEmail());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultBean.error("注册失败");
         }

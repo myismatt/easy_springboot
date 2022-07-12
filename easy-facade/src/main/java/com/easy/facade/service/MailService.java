@@ -105,14 +105,12 @@ public class MailService {
 
                 logger.info("发送邮件成功: 主题->{}", subject);
 
-            }
-            catch (MessagingException e) {
+            } catch (MessagingException e) {
                 e.printStackTrace();
 
                 logger.error("发送邮件失败: 主题->{}", subject);
             }
-        }
-        else {
+        } else {
 
             //创建一个简单邮件信息对象
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -165,8 +163,7 @@ public class MailService {
             }
 
             return true;
-        }
-        catch (MessagingException e) {
+        } catch (MessagingException e) {
             e.printStackTrace();
 
             logger.error("邮件基本信息出错->{}", subject);
@@ -238,8 +235,7 @@ public class MailService {
                     //添加附件
                     mimeMessageHelper.addAttachment(fileName, resource);
 
-                }
-                catch (MessagingException e) {
+                } catch (MessagingException e) {
 
                     e.printStackTrace();
 

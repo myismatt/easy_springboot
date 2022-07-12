@@ -34,6 +34,15 @@ public class KeyConfig {
         return rsaPrivateKey;
     }
 
+    public static String getDesKey() {
+        return desKey;
+    }
+
+    @Value("${key.desKey:}")
+    public void setDesKey(String desKey) {
+        KeyConfig.desKey = desKey;
+    }
+
     @Value("${key.rsaPublicKey:}")
     public void setPublicKey(String publicKey) {
         KeyConfig.rsaPublicKey = publicKey;
@@ -42,14 +51,5 @@ public class KeyConfig {
     @Value("${key.rsaPrivateKey:}")
     public void setPrivateKey(String privateKey) {
         KeyConfig.rsaPrivateKey = privateKey;
-    }
-
-    public static String getDesKey() {
-        return desKey;
-    }
-
-    @Value("${key.desKey:}")
-    public void setDesKey(String desKey) {
-        KeyConfig.desKey = desKey;
     }
 }
