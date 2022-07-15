@@ -3,8 +3,11 @@ package com.easy.facade.controller;
 import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.LoginParamDTO;
 import com.easy.facade.beans.entity.TokenInfo;
+import com.easy.facade.beans.vo.MenuVO;
 import com.easy.facade.beans.vo.UserInfoVO;
+import com.easy.facade.framework.security.SecurityUtils;
 import com.easy.facade.service.LoginService;
+import com.easy.facade.service.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 登录
@@ -26,9 +30,11 @@ import javax.validation.Valid;
 public class LoginController {
 
     private final LoginService loginService;
+    private final MenuService menuService;
 
-    public LoginController(LoginService loginService) {
+    public LoginController(LoginService loginService, MenuService menuService) {
         this.loginService = loginService;
+        this.menuService = menuService;
     }
 
     /**
@@ -48,9 +54,20 @@ public class LoginController {
      *
      * @return UserInfoVO
      */
-    @GetMapping(value = "userInfo", headers = "Authorization")
+    @GetMapping(value = "user_info", headers = "Authorization")
     @ApiOperation(value = "获取用户信息", httpMethod = "GET")
     public ResultBean<UserInfoVO> gtUserInfo() {
         return ResultBean.success(loginService.getUserInfo());
+    }
+
+    /**
+     * 获取用户菜单
+     *
+     * @return List<RoleMenuVO>
+     */
+    @GetMapping(value = "user_menu", headers = "Authorization")
+    @ApiOperation(value = "获取用户菜单", httpMethod = "GET")
+    public ResultBean<List<MenuVO>> getUserMenu() {
+        return ResultBean.success("查询成功", menuService.getUserMenu(SecurityUtils.getLoginUserId()));
     }
 }

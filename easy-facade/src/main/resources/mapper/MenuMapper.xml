@@ -22,7 +22,41 @@
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, menu_name, parent_id, order_num, `path`, component, is_frame, menu_type, `show`,
-        `enable`, perms, icon, create_time, update_time, remark
+        id,
+        menu_name,
+        parent_id,
+        order_num,
+        `path`,
+        component,
+        is_frame,
+        menu_type,
+        `show`,
+        `enable`,
+        perms,
+        icon,
+        create_time,
+        update_time,
+        remark
     </sql>
+
+    <select id="selectMenuByRoleId" resultType="com.easy.facade.beans.vo.MenuVO">
+        SELECT m.id AS id,
+        m.menu_name AS menuName,
+        m.parent_id AS parentId,
+        m.order_num AS orderNum,
+        m.`path` AS `path`,
+        m.component AS component,
+        m.is_frame AS isFrame,
+        m.menu_type AS menuType,
+        m.`show` AS `show`,
+        m.`enable` AS `enable`,
+        m.perms AS perms,
+        m.icon AS icon,
+        m.create_time AS createTime,
+        m.update_time AS updateTime,
+        m.remark AS remark
+        FROM easy_menu m
+        LEFT JOIN easy_role_menu rm ON m.id = rm.menu_id
+        WHERE rm.role_id = #{roleId}
+    </select>
 </mapper>

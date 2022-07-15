@@ -2,7 +2,11 @@ package com.easy.facade.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.facade.beans.model.Menu;
+import com.easy.facade.beans.vo.MenuVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 菜单路由
@@ -13,4 +17,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface MenuMapper extends BaseMapper<Menu> {
+    /**
+     * 根据角色ID获取菜单信息
+     *
+     * @param roleId 角色ID
+     * @return 菜单信息
+     */
+    List<MenuVO> selectMenuByRoleId(@Param("roleId") String roleId);
 }

@@ -7,17 +7,16 @@ import com.easy.facade.beans.model.RoleMenu;
 import com.easy.facade.beans.vo.RoleInfoVO;
 import com.easy.facade.beans.vo.RoleMenuVO;
 import com.easy.facade.dao.RoleMapper;
-import com.easy.facade.enums.MenuTypeEnum;
 import com.easy.facade.framework.exception.CustomException;
+import com.easy.facade.util.MenuUtils;
 import com.easy.utils.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -30,12 +29,14 @@ import java.util.stream.Collectors;
 @Service
 public class RoleService extends ServiceImpl<RoleMapper, Role> {
 
+    private static final Logger logger = LoggerFactory.getLogger(RoleService.class);
+
     private final RoleMenuService roleMenuService;
+
 
     public RoleService(RoleMenuService roleMenuService) {
         this.roleMenuService = roleMenuService;
     }
-
 
     /**
      * 新增角色
@@ -85,45 +86,10 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
         if (roleMenuList != null) {
             BeanUtils.copyProperties(role, data);
             // 构建树形结构
-            data.setMenuList(menuTree(roleMenuList));
+            data.setMenuList(MenuUtils.roleMenuTree(roleMenuList));
         }
         return data;
     }
 
-    /**
-     * 构建树形结构的菜单权限
-     *
-     * @param sourceList 菜单列表
-     * @return RoleMenuVO树形
-     */
-    public List<RoleMenuVO> menuTree(List<RoleMenuVO> sourceList) {
-        if (sourceList == null) {
-            return null;
-        }
-        // 对权限按照类型进行分组
-        Map<MenuTypeEnum, List<RoleMenuVO>> sourceListMap = sourceList.stream().collect(Collectors.groupingBy(RoleMenuVO::getMenuType));
-        // 取出类型
-        List<MenuTypeEnum> collect = new ArrayList<>(sourceListMap.keySet());
-        MenuTypeEnum max = Collections.max(collect);
-        return sourceListMap.get(max).stream().map(rootVO -> menuTreeByRoot(sourceList, rootVO)).collect(Collectors.toList());
-    }
 
-    /**
-     * 根据顶级目录构建树形菜单权限
-     *
-     * @param sourceList 菜单列表
-     * @param rootVO     顶级目录
-     * @return RoleMenuVO树形
-     */
-    public RoleMenuVO menuTreeByRoot(List<RoleMenuVO> sourceList, RoleMenuVO rootVO) {
-        if (sourceList == null) {
-            return null;
-        }
-        List<RoleMenuVO> childList = sourceList.stream().filter(child -> child.getMenuId().equals(child.getParentId())).map(child -> menuTreeByRoot(sourceList, child)).collect(Collectors.toList());
-        if (childList.size() == 0) {
-            return rootVO;
-        }
-        rootVO.setChild(childList);
-        return rootVO;
-    }
 }

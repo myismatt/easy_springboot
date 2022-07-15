@@ -6,7 +6,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.facade.beans.dto.MenuDTO;
 import com.easy.facade.beans.dto.MenuSearchDTO;
 import com.easy.facade.beans.model.Menu;
+import com.easy.facade.beans.model.UserRole;
+import com.easy.facade.beans.vo.MenuVO;
 import com.easy.facade.dao.MenuMapper;
+import com.easy.facade.framework.exception.CustomException;
+import com.easy.facade.util.MenuUtils;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,11 @@ import java.util.List;
  */
 @Service
 public class MenuService extends ServiceImpl<MenuMapper, Menu> {
+    private final UserRoleService userRoleService;
+
+    public MenuService(UserRoleService userRoleService) {
+        this.userRoleService = userRoleService;
+    }
 
     public void addMenu(MenuDTO dto) {
         Menu newMenu = new Menu();
@@ -48,5 +57,21 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
                 .eq(StringUtils.isNotNull(dto.getMenuType()), Menu::getMenuType, dto.getMenuType())
                 .list();
     }
-}
 
+    /**
+     * 获取用户菜单权限列表
+     *
+     * @param userId 用户id
+     * @return List<MenuVO>
+     */
+    public List<MenuVO> getUserMenu(String userId) {
+
+        UserRole userRole = userRoleService.lambdaQuery().eq(UserRole::getUserId, userId).one();
+        if (userRole == null) {
+            throw new CustomException("未查询到角色信息");
+        }
+        // 查询角色关联的菜单权限
+        List<MenuVO> roleMenuList = this.getBaseMapper().selectMenuByRoleId(userRole.getRoleId());
+        return MenuUtils.menuTree(roleMenuList);
+    }
+}

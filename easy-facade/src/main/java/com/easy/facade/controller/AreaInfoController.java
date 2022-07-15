@@ -1,8 +1,8 @@
 package com.easy.facade.controller;
 
 import com.easy.facade.beans.model.AreaInfo;
+import com.easy.facade.service.AreaInfoService;
 import com.easy.facade.service.AreaJsoupService;
-import com.easy.facade.services.AreaInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;

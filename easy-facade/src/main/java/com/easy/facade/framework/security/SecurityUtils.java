@@ -35,6 +35,16 @@ public class SecurityUtils {
     }
 
     /**
+     * 获取登录用户ID
+     *
+     * @return 用户id
+     */
+    public static String getLoginUserId() {
+        LoginUserDetails userDetails = getLoginUserInfo();
+        return userDetails.getId();
+    }
+
+    /**
      * 获取用户信息
      *
      * @return LoginUserDetails

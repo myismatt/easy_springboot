@@ -1,4 +1,4 @@
-package com.easy.facade.utils;
+package com.easy.facade.util;
 
 import com.easy.facade.beans.vo.ConfigVO;
 import com.easy.facade.constant.RedisKeyConsts;

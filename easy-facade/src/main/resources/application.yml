@@ -113,4 +113,3 @@ allow-list:
     - /user/register
     - /login
     - /druid/**
-    - /**

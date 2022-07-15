@@ -10,7 +10,7 @@ import com.easy.facade.beans.model.Config;
 import com.easy.facade.beans.vo.ConfigVO;
 import com.easy.facade.dao.ConfigMapper;
 import com.easy.facade.enums.YesOrNoEnum;
-import com.easy.facade.utils.ConfigUtils;
+import com.easy.facade.util.ConfigUtils;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
