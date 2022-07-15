@@ -34,6 +34,7 @@
         <java-jwt.version>3.19.2</java-jwt.version>
         <jasypt-spring.version>3.0.4</jasypt-spring.version>
         <jasypt.version>1.9.3</jasypt.version>
+        <jsoup.version>1.14.3</jsoup.version>
     </properties>
 
     <dependencies>
@@ -139,6 +140,12 @@
             <version>${jasypt.version}</version>
         </dependency>
 
+        <!--jsoup-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
