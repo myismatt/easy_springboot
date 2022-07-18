@@ -7,6 +7,7 @@ import com.easy.utils.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 
@@ -59,7 +60,7 @@ public class PermissionCheckService {
      * @param role 角色字符串
      * @return 用户是否具备某角色
      */
-    public boolean hasRole(String role) {
+    public boolean hasRole(String... role) {
         if (StringUtils.isEmpty(role)) {
             return false;
         }
@@ -70,7 +71,7 @@ public class PermissionCheckService {
         if (CollectionUtils.isEmpty(loginUser.getUserInfo().getRoleList())) {
             return false;
         }
-        return loginUser.getUserInfo().getRoleList().stream().map(RoleInfoVO::getRoleKey).anyMatch(roleKey -> roleKey.equals(StringUtils.trim(role)));
+        return loginUser.getUserInfo().getRoleList().stream().map(RoleInfoVO::getRoleKey).anyMatch(roleKey -> Arrays.asList(role).contains(roleKey));
     }
 
 }

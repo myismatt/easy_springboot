@@ -72,7 +72,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         // 密码加密
         newUser.setPassword(new BCryptPasswordEncoder().encode(password));
         newUser.setEmail(email);
-        newUser.setAccountStatus(AccountStatusEnum.NORMAL);
+        newUser.setAccountStatus(AccountStatusEnum.INACTIVATED);
         // 保存用户
         save(newUser);
         UserInfo newUserInfo = new UserInfo();
@@ -128,11 +128,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     public void sendActivationCode(User user) {
-        EmailActivationCodeMessage emailActivationCodeMessage = new EmailActivationCodeMessage();
-        emailActivationCodeMessage.setUserId(user.getId());
-        emailActivationCodeMessage.setUsername(user.getUsername());
-        emailActivationCodeMessage.setUserEmail(new String[]{user.getEmail()});
-        // 发送邮件
-        mailService.sendActivationCode(emailActivationCodeMessage);
+        // 发送redis消息, 发送激活码邮件 @link EmailActivationCodeListener.class
+        redisUtils.pushListenerMessage(RedisListenerTopicConsts.EMAIL_ACTIVATION_CODE_TOPIC, new EmailActivationCodeMessage(user.getId(), user.getUsername(), new String[]{user.getEmail()}));
     }
 }
