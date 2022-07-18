@@ -74,11 +74,10 @@ public class AreaJsoupService {
     /**
      * 获取所有的省份（本示例只爬取宁夏回族自治区五级行政区划的信息）
      *
-     * @param allName 省级单位名字
-     * @param url     请求地址：http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/index.html
+     * @param url 请求地址：http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/index.html
      * @return List<AreaInfo>
      */
-    public List<AreaInfo> getProvinces(String url, String allName, Integer year) throws InterruptedException, IOException {
+    public List<AreaInfo> getProvinces(String url, Integer year) throws InterruptedException, IOException {
         List<AreaInfo> provincesAreas = new ArrayList<>();
         Document connect = connect(url);
         Elements rowProvince = connect.select("tr.provincetr");
