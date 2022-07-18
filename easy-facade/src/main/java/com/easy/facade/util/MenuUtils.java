@@ -3,7 +3,7 @@ package com.easy.facade.util;
 import com.easy.facade.beans.vo.MenuVO;
 import com.easy.facade.beans.vo.RoleMenuVO;
 import com.easy.facade.enums.MenuTypeEnum;
-import com.easy.facade.framework.exception.CustomException;
+import com.easy.facade.framework.exception.CustomizeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class MenuUtils {
     public static List<RoleMenuVO> roleMenuTree(List<RoleMenuVO> sourceList) {
         if (sourceList == null) {
             logger.error("构建树形菜单权限错误, 传入菜单数据为null; Exception Class: RoleService.class");
-            throw new CustomException("菜单数据异常");
+            throw new CustomizeException("菜单数据异常");
         }
         // 对权限按照类型进行分组
         Map<MenuTypeEnum, List<RoleMenuVO>> sourceListMap = sourceList.stream().collect(Collectors.groupingBy(RoleMenuVO::getMenuType));
@@ -71,7 +71,7 @@ public class MenuUtils {
     public static List<MenuVO> menuTree(List<MenuVO> sourceList) {
         if (sourceList == null) {
             logger.error("构建树形菜单权限错误, 传入菜单数据为null; Exception Class: RoleService.class");
-            throw new CustomException("菜单数据异常");
+            throw new CustomizeException("菜单数据异常");
         }
         // 对权限按照类型进行分组
         Map<MenuTypeEnum, List<MenuVO>> sourceListMap = sourceList.stream().collect(Collectors.groupingBy(MenuVO::getMenuType));

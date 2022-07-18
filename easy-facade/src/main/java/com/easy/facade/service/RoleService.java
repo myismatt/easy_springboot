@@ -7,7 +7,7 @@ import com.easy.facade.beans.model.RoleMenu;
 import com.easy.facade.beans.vo.RoleInfoVO;
 import com.easy.facade.beans.vo.RoleMenuVO;
 import com.easy.facade.dao.RoleMapper;
-import com.easy.facade.framework.exception.CustomException;
+import com.easy.facade.framework.exception.CustomizeException;
 import com.easy.facade.util.MenuUtils;
 import com.easy.utils.lang.StringUtils;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
     @Transactional(rollbackFor = Exception.class)
     public void addRole(RoleDTO dto) {
         if (checkRoleKeyExists(dto.getRoleKey())) {
-            throw new CustomException("角色代码存在");
+            throw new CustomizeException("角色代码存在");
         }
         Role newRole = new Role();
         BeanUtils.copyProperties(dto, newRole);
@@ -78,7 +78,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
         // 查询角色信息
         Role role = lambdaQuery().eq(Role::getRoleKey, roleKey).one();
         if (role == null) {
-            throw new CustomException("未查询到角色信息");
+            throw new CustomizeException("未查询到角色信息");
         }
         RoleInfoVO data = new RoleInfoVO();
         // 查询角色关联的菜单权限

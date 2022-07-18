@@ -10,21 +10,21 @@ import com.easy.facade.enums.HttpStatus;
  * @Author Matt
  * @Date 2021/5/26 17:15
  */
-public class CustomException extends RuntimeException {
+public class CustomizeException extends RuntimeException {
 
     private final ResultBean<String> result;
 
-    public CustomException(HttpStatus httpStatus) {
+    public CustomizeException(HttpStatus httpStatus) {
         super(httpStatus.getReasonPhrase().toString());
         this.result = ResultBean.custom(httpStatus.getValue(), httpStatus.getReasonPhrase());
     }
 
-    public CustomException(int code, String message) {
+    public CustomizeException(int code, String message) {
         super(message.toString());
         this.result = ResultBean.custom(code, message);
     }
 
-    public CustomException(String message) {
+    public CustomizeException(String message) {
         super(message.toString());
         this.result = ResultBean.error(message);
     }

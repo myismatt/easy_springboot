@@ -26,7 +26,7 @@ public final class HttpCode {
     /**
      * 未授权
      */
-    public static final Integer UNAUTHORIZED = 401;
+    public static final Integer UNAuthorIZED = 401;
 
     /**
      * 禁止访问

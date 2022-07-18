@@ -30,8 +30,8 @@ public class GlobalExceptionHandler {
     /**
      * 自定义异常
      */
-    @ExceptionHandler(value = CustomException.class)
-    public ResultBean<String> handleCustom(CustomException e) {
+    @ExceptionHandler(value = CustomizeException.class)
+    public ResultBean<String> handleCustom(CustomizeException e) {
         logger.error("自定义异常拦截-> e={}", e.getMessage());
         e.printStackTrace();
         return e.getResult();
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     public ResultBean<String> handleAuthorizationException(AccessDeniedException e) {
         logger.error("权限异常拦截-> e={}", e.getMessage());
         e.printStackTrace();
-        return ResultBean.custom(HttpStatus.UNAUTHORIZED);
+        return ResultBean.custom(HttpStatus.UNAuthorIZED);
     }
 
     /**

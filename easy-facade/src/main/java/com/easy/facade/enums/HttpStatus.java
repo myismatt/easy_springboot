@@ -17,7 +17,7 @@ public enum HttpStatus implements IEnum<Integer> {
      */
     SUCCESS(HttpCode.SUCCESS, "成功"),
     ERROR(HttpCode.ERROR, "错误"),
-    UNAUTHORIZED(HttpCode.UNAUTHORIZED, "无权访问"),
+    UNAuthorIZED(HttpCode.UNAuthorIZED, "无权访问"),
     FORBIDDEN(HttpCode.FORBIDDEN, "禁止访问"),
     UNKNOWN_EXCEPTION(HttpCode.ERROR, "未知异常"),
     TOKEN_EXCEPTION(HttpCode.ERROR, "签名异常"),

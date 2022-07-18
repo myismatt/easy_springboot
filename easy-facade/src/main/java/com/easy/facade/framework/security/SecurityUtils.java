@@ -2,7 +2,7 @@ package com.easy.facade.framework.security;
 
 import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.constant.SystemConsts;
-import com.easy.facade.framework.exception.CustomException;
+import com.easy.facade.framework.exception.CustomizeException;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -52,7 +52,7 @@ public class SecurityUtils {
     public static LoginUserDetails getLoginUserInfo() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!(principal instanceof LoginUserDetails)) {
-            throw new CustomException("登录信息获取异常");
+            throw new CustomizeException("登录信息获取异常");
         }
         return (LoginUserDetails) principal;
     }

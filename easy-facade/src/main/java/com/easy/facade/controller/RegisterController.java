@@ -4,7 +4,7 @@ import com.easy.facade.beans.base.ResultBean;
 import com.easy.facade.beans.dto.RegisterDTO;
 import com.easy.facade.beans.model.User;
 import com.easy.facade.enums.AccountStatusEnum;
-import com.easy.facade.framework.exception.CustomException;
+import com.easy.facade.framework.exception.CustomizeException;
 import com.easy.facade.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +39,7 @@ public class RegisterController {
     public ResultBean<String> register(@Valid @RequestBody RegisterDTO dto) {
         boolean verifyAccount = userService.accountIsNotExist(dto.getUsername());
         if (!verifyAccount) {
-            throw new CustomException("账号已存在");
+            throw new CustomizeException("账号已存在");
         }
         try {
             userService.registerNewUser(dto.getUsername(), dto.getPassword(), dto.getEmail());

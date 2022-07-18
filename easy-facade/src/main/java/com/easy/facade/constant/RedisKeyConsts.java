@@ -23,6 +23,11 @@ public final class RedisKeyConsts {
      */
     public static final String CONFIG_LIST_KEY = "system_config_list_key:";
 
+    /**
+     * 字典缓存键
+     */
+    public static final String DICT_KEY = "system_dict:";
+
     private RedisKeyConsts() {
         throw new IllegalAccessError("RedisKey.class");
     }

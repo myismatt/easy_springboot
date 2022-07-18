@@ -3,7 +3,7 @@ package com.easy.facade.service;
 import cn.hutool.core.util.RandomUtil;
 import com.easy.facade.beans.entity.EmailActivationCodeMessage;
 import com.easy.facade.constant.RedisKeyConsts;
-import com.easy.facade.framework.exception.CustomException;
+import com.easy.facade.framework.exception.CustomizeException;
 import com.easy.facade.framework.redis.RedisUtils;
 import com.easy.utils.lang.StringUtils;
 import org.slf4j.Logger;
@@ -73,7 +73,7 @@ public class MailService {
         //检验参数：邮件主题、收件人、邮件内容必须不为空才能够保证基本的逻辑执行
         if (StringUtils.isAnyBlank(subject, content) || StringUtils.isEmpty(toWho)) {
             logger.error("邮件-> {} 无法继续执行，因为缺少基本的参数：邮件主题、收件人、邮件内容", subject);
-            throw new CustomException("模板邮件无法继续发送，因为缺少必要的参数！");
+            throw new CustomizeException("模板邮件无法继续发送，因为缺少必要的参数！");
         }
 
         logger.info("开始发送简单文本邮件：主题->{}，收件人->{}，抄送人->{}，密送人->{}，附件->{}", subject, toWho, ccPeoples, bccPeoples, attachments);

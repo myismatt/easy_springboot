@@ -60,9 +60,9 @@ public class ConfigController {
      * @param dto 查询入参
      * @return ConfigCache
      */
-    @PreAuthorize("@auth.hasKey('admin:config:qurey')")
     @GetMapping(value = "query", headers = "Authorization")
-    @ApiOperation(value = "集合查询", httpMethod = "GET")
+    @PreAuthorize("@auth.hasKey('admin:config:qurey')")
+    @ApiOperation(value = "集合查询参数配置", httpMethod = "GET")
     public ResultBean<List<ConfigVO>> getList(ConfigSearchDTO dto) {
         return ResultBean.success(configService.getList(dto));
     }
@@ -73,9 +73,9 @@ public class ConfigController {
      * @param dto 查询入参
      * @return IPage<Config>
      */
-    @PreAuthorize("@auth.hasKey('admin:config:page')")
     @GetMapping(value = "page", headers = "Authorization")
-    @ApiOperation(value = "分页查询", httpMethod = "GET")
+    @PreAuthorize("@auth.hasKey('admin:config:page')")
+    @ApiOperation(value = "分页查询参数配置", httpMethod = "GET")
     public ResultBean<IPage<Config>> pageConfig(ConfigSearchDTO dto) {
         return ResultBean.success(configService.pageConfig(dto));
     }
@@ -86,8 +86,8 @@ public class ConfigController {
      * @param dto 入参
      * @return 操作结果
      */
+    @PostMapping(value = "add", headers = "Authorization")
     @PreAuthorize("@auth.hasKey('admin:config:add')")
-    @PostMapping("add")
     @ApiOperation(value = "新增参数配置", httpMethod = "POST")
     public ResultBean<String> addConfig(@Valid @RequestBody ConfigDTO dto) {
         configService.addConfig(dto);
@@ -100,8 +100,8 @@ public class ConfigController {
      * @param dto 入参
      * @return 操作结果
      */
-    @PreAuthorize("@auth.hasKey('admin:config:update')")
     @PutMapping(value = "update", headers = "Authorization")
+    @PreAuthorize("@auth.hasKey('admin:config:update')")
     @ApiOperation(value = "更新参数配置", httpMethod = "PUT")
     public ResultBean<String> updateConfig(@Valid @RequestBody ConfigUpdateDTO dto) {
         configService.updateConfig(dto);
@@ -114,8 +114,8 @@ public class ConfigController {
      * @param ids 主键集合
      * @return 操作结果
      */
-    @PreAuthorize("@auth.hasKey('admin:config:del')")
     @DeleteMapping(value = "delete", headers = "Authorization")
+    @PreAuthorize("@auth.hasKey('admin:config:del')")
     @ApiOperation(value = "删除参数配置", httpMethod = "DELETE")
     public ResultBean<String> delConfig(@RequestBody String[] ids) {
         configService.delConfig(ids);

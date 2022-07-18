@@ -58,8 +58,8 @@ public class RoleController {
      *
      * @return 操作结果
      */
-    @PreAuthorize("@auth.hasKey('admin:role:add')")
     @PostMapping(value = "add", headers = "Authorization")
+    @PreAuthorize("@auth.hasKey('admin:role:add')")
     @ApiOperation(value = "新增角色", httpMethod = "POST")
     public ResultBean<String> addRole(@Valid @RequestBody RoleDTO dto) {
         roleService.addRole(dto);

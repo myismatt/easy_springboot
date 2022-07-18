@@ -23,6 +23,6 @@ import java.io.IOException;
 public class EasyAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.UNAUTHORIZED));
+        ResponseUtils.writeJson(response, ResultBean.custom(HttpStatus.UNAuthorIZED));
     }
 }

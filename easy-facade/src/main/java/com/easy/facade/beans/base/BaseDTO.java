@@ -3,8 +3,7 @@ package com.easy.facade.beans.base;
 import com.easy.utils.lang.StringUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -15,8 +14,7 @@ import java.io.Serializable;
  * @Date 2022年06月28日15
  */
 @ApiModel("分页参数")
-@ToString
-@Setter
+@Data
 public class BaseDTO implements Serializable {
 
     /**
@@ -38,4 +36,5 @@ public class BaseDTO implements Serializable {
     public Long getSize() {
         return StringUtils.isNull(size) ? 10 : size;
     }
+
 }

@@ -7,13 +7,39 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="dict_name" jdbcType="VARCHAR" property="dictName"/>
         <result column="dict_type" jdbcType="VARCHAR" property="dictType"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="enable" jdbcType="INTEGER" property="enable"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, dict_name, dict_type, `status`, create_time, update_time, remark
+        id,
+        dict_name,
+        dict_type,
+        `enable`,
+        create_time,
+        update_time,
+        remark
     </sql>
+
+    <select id="selectDictTypeInfo" resultType="com.easy.facade.beans.vo.DictTypeVO">
+        SELECT dt.id AS id,
+        dt.dict_name AS dictName,
+        dt.dict_type AS dictType,
+        dt.`enable` AS `enable`,
+        dt.remark AS remark
+        FROM easy_dict_type dt
+        WHERE dt.dict_type = #{dictType}
+    </select>
+
+    <select id="selectAllDictType" resultType="com.easy.facade.beans.vo.DictTypeVO">
+        SELECT id, dict_name, dict_type, `enable`
+        FROM easy_dict_type
+        <where>
+            <if test="enable != null">
+                `enable` = #{enable}
+            </if>
+        </where>
+    </select>
 </mapper>

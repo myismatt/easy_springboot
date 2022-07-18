@@ -1,37 +1,42 @@
-package com.easy.facade.beans.model;
+package com.easy.facade.beans.dto;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.easy.facade.beans.base.BaseEntity;
 import com.easy.facade.enums.YesOrNoEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotBlank;
 
 /**
- * 字典类型
- * </p>
+ * 字典类型更新参数
+ * <p>
+ * 2022/3/15 14:25
  *
  * @Author Matt
- * @Date 2022/7/18 16:40
  */
-@ApiModel(value = "字典类型")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@TableName(value = "easy_dict_type")
-public class DictType extends BaseEntity {
+@ApiModel("字典类型更新参数")
+public class DictTypeUpdateDTO {
+
+    /**
+     * 主键ID
+     */
+    @NotBlank(message = "主键ID不能为空")
+    @ApiModelProperty(value = "主键ID")
+    private String id;
+
     /**
      * 字典名称
      */
-    @TableField(value = "dict_name")
+    @NotBlank(message = "字典名称不能为空")
     @ApiModelProperty(value = "字典名称")
     private String dictName;
 
     /**
      * 字典类型
      */
-    @TableField(value = "dict_type")
+    @NotBlank(message = "字典类型不能为空")
     @ApiModelProperty(value = "字典类型")
     private String dictType;
 
@@ -41,4 +46,11 @@ public class DictType extends BaseEntity {
     @TableField(value = "`enable`")
     @ApiModelProperty(value = "是否启用(0-否,1-是)")
     private YesOrNoEnum enable;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value = "备注")
+    private String remark;
+
 }

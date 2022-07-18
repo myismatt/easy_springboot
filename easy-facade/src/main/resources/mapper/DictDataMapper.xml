@@ -13,14 +13,44 @@
         <result column="css_class" jdbcType="VARCHAR" property="cssClass"/>
         <result column="list_class" jdbcType="VARCHAR" property="listClass"/>
         <result column="is_default" jdbcType="INTEGER" property="isDefault"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="enable" jdbcType="INTEGER" property="enable"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, dict_type_id, dict_type, dict_sort, dict_label, dict_value, css_class, list_class,
-        is_default, `status`, create_time, update_time, remark
+        id,
+        dict_type_id,
+        dict_type,
+        dict_sort,
+        dict_label,
+        dict_value,
+        css_class,
+        list_class,
+        is_default,
+        `enable`,
+        create_time,
+        update_time,
+        remark
     </sql>
+
+    <select id="selectAllDictData" resultType="com.easy.facade.beans.vo.DictDataVO">
+        SELECT id AS id,
+        dict_type_id AS dictTypeId,
+        dict_type AS dictType,
+        dict_sort AS dictSort,
+        dict_label AS dictLabel,
+        dict_value AS dictValue,
+        css_class AS cssClass,
+        list_class AS listClass,
+        is_default AS isDefault,
+        `enable` AS `enable`
+        FROM easy_dict_data
+        <where>
+            <if test="enable != null">
+                `enable` = #{enable}
+            </if>
+        </where>
+    </select>
 </mapper>

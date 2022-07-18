@@ -2,7 +2,7 @@ package com.easy.facade.service;
 
 import com.easy.facade.beans.entity.LoginUserDetails;
 import com.easy.facade.beans.vo.UserInfoVO;
-import com.easy.facade.framework.exception.CustomException;
+import com.easy.facade.framework.exception.CustomizeException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,14 +34,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 case NORMAL:
                     break;
                 case INACTIVATED:
-                    throw new CustomException("账号未激活");
+                    throw new CustomizeException("账号未激活");
                 case STOP:
-                    throw new CustomException("账号被停用");
+                    throw new CustomizeException("账号被停用");
                 default:
-                    throw new CustomException("账号信息异常");
+                    throw new CustomizeException("账号信息异常");
             }
         } else {
-            throw new CustomException("账号不存在");
+            throw new CustomizeException("账号不存在");
         }
         return loadLoginUser(userInfo);
     }

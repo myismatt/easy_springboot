@@ -9,7 +9,7 @@ import com.easy.facade.beans.model.Menu;
 import com.easy.facade.beans.model.UserRole;
 import com.easy.facade.beans.vo.MenuVO;
 import com.easy.facade.dao.MenuMapper;
-import com.easy.facade.framework.exception.CustomException;
+import com.easy.facade.framework.exception.CustomizeException;
 import com.easy.facade.util.MenuUtils;
 import com.easy.utils.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -68,7 +68,7 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
 
         UserRole userRole = userRoleService.lambdaQuery().eq(UserRole::getUserId, userId).one();
         if (userRole == null) {
-            throw new CustomException("未查询到角色信息");
+            throw new CustomizeException("未查询到角色信息");
         }
         // 查询角色关联的菜单权限
         List<MenuVO> roleMenuList = this.getBaseMapper().selectMenuByRoleId(userRole.getRoleId());

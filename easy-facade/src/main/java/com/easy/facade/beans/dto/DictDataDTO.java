@@ -1,86 +1,88 @@
-package com.easy.facade.beans.model;
+package com.easy.facade.beans.dto;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.easy.facade.beans.base.BaseEntity;
 import com.easy.facade.enums.YesOrNoEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
- * 字典数据
- * </p>
+ * 字典数据入参
+ * <p>
+ * 2022/3/9 9:45
  *
  * @Author Matt
- * @Date 2022/7/18 16:40
  */
-@ApiModel(value = "字典数据")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@TableName(value = "easy_dict_data")
-public class DictData extends BaseEntity {
+@ApiModel("字典数据入参")
+public class DictDataDTO {
+
     /**
      * 字典类型ID
      */
-    @TableField(value = "dict_type_id")
+    @NotBlank(message = "字典类型ID不能为空")
     @ApiModelProperty(value = "字典类型ID")
     private String dictTypeId;
 
     /**
      * 字典类型
      */
-    @TableField(value = "dict_type")
+    @NotBlank(message = "字典类型不能为空")
     @ApiModelProperty(value = "字典类型")
     private String dictType;
 
     /**
      * 字典排序
      */
-    @TableField(value = "dict_sort")
+    @NotNull(message = "字典排序不能为空")
     @ApiModelProperty(value = "字典排序")
     private Integer dictSort;
 
     /**
      * 字典标签
      */
-    @TableField(value = "dict_label")
+    @NotBlank(message = "字典标签不能为空")
     @ApiModelProperty(value = "字典标签")
     private String dictLabel;
 
     /**
      * 字典键值
      */
-    @TableField(value = "dict_value")
+    @NotBlank(message = "字典键值不能为空")
     @ApiModelProperty(value = "字典键值")
     private String dictValue;
 
     /**
      * 样式属性（其他样式扩展）
      */
-    @TableField(value = "css_class")
     @ApiModelProperty(value = "样式属性（其他样式扩展）")
     private String cssClass;
 
     /**
      * 表格回显样式
      */
-    @TableField(value = "list_class")
     @ApiModelProperty(value = "表格回显样式")
     private String listClass;
 
     /**
-     * 是否默认(0否,1-是)
+     * 是否默认（NO-否,YES-是）
      */
-    @TableField(value = "is_default")
-    @ApiModelProperty(value = "是否默认(0否,1-是)")
+    @ApiModelProperty(value = "是否默认（NO-否,YES-是）")
     private YesOrNoEnum isDefault;
 
     /**
-     * 是否启用(0否,1-是)
+     * 是否启用(NO-否,YES-是)
      */
     @TableField(value = "`enable`")
-    @ApiModelProperty(value = "是否启用(0否,1-是)")
+    @ApiModelProperty(value = "是否启用(NO-否,YES-是)")
     private YesOrNoEnum enable;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value = "备注")
+    private String remark;
 }
