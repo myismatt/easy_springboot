@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -113,9 +112,9 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
      *
      * @param ids 主键集合
      */
-    public void delConfig(String[] ids) {
-        this.removeByIds(Arrays.asList(ids));
-        ConfigUtils.getInstance().delConfig(List.of(ids));
+    public void delConfig(List<String> ids) {
+        this.removeByIds(ids);
+        ConfigUtils.getInstance().delConfig(ids);
     }
 
     /**

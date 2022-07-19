@@ -14,7 +14,6 @@ import com.easy.utils.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -104,8 +103,8 @@ public class DictDataService extends ServiceImpl<DictDataMapper, DictData> {
      * @param ids 主键id集合
      */
     @Transactional(rollbackFor = Exception.class)
-    public void delDictData(String[] ids) {
-        removeByIds(Arrays.asList(ids));
+    public void delDictData(List<String> ids) {
+        removeByIds(ids);
     }
 
 }

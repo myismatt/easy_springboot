@@ -99,4 +99,18 @@ public class UserController {
         userService.updateUserInfo(dto);
         return ResultBean.success("操作成功");
     }
+
+    /**
+     * 重置用户密码
+     *
+     * @param userIds 用户id集合
+     * @return 操作结果
+     */
+    @PostMapping(value = "reset_pwd", headers = "Authorization")
+    @PreAuthorize("@auth.hasKey('admin:user:reset_pwd')")
+    @ApiOperation(value = "重置用户密码", httpMethod = "POST")
+    public ResultBean<String> resetUserPassword(@RequestBody List<String> userIds) {
+        userService.resetUserPassword(userIds);
+        return ResultBean.success("操作成功");
+    }
 }

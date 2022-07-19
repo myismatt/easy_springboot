@@ -117,7 +117,7 @@ public class ConfigController {
     @DeleteMapping(value = "delete", headers = "Authorization")
     @PreAuthorize("@auth.hasKey('admin:config:del')")
     @ApiOperation(value = "删除参数配置", httpMethod = "DELETE")
-    public ResultBean<String> delConfig(@RequestBody String[] ids) {
+    public ResultBean<String> delConfig(@RequestBody List<String> ids) {
         configService.delConfig(ids);
         return ResultBean.success("删除成功");
     }

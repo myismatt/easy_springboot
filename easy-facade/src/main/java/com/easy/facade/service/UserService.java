@@ -150,4 +150,8 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         page.setRecords(getBaseMapper().getUserInfoPage(page, dto));
         return page;
     }
+
+    public void resetUserPassword(List<String> userIds) {
+        // TODO
+    }
 }

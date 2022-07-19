@@ -134,7 +134,7 @@ public class DictTypeController {
     @DeleteMapping(value = "del", headers = "Authorization")
     @ApiOperation(value = "删除字典类型", httpMethod = "DELETE")
     @PreAuthorize("@auth.hasKey('admin:dictType:del')")
-    public ResultBean<String> delDictType(@ApiParam("主键ID") @RequestParam("id") String id) {
+    public ResultBean<String> delDictType(@RequestBody String id) {
         dictTypeService.delDictType(id);
         return ResultBean.success("操作成功");
     }

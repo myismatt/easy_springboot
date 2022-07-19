@@ -10,7 +10,6 @@ import com.easy.facade.service.DictDataService;
 import com.easy.facade.service.DictTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -102,7 +101,7 @@ public class DictDataController {
     @DeleteMapping(value = "del", headers = "Authorization")
     @PreAuthorize("@auth.hasKey('admin:dictData:del')")
     @ApiOperation(value = "删除字典数据", httpMethod = "DELETE")
-    public ResultBean<String> delDictData(@ApiParam("主键ID数组") @RequestBody String[] ids) {
+    public ResultBean<String> delDictData(@RequestBody List<String> ids) {
         dictDataService.delDictData(ids);
         // 重载缓存
         dictTypeService.initDictCache();
