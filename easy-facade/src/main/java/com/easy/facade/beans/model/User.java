@@ -22,6 +22,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "easy_user")
 public class User extends BaseEntity {
+
     /**
      * 用户特殊编码
      */

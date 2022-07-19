@@ -1,11 +1,16 @@
 package com.easy.facade.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.facade.beans.dto.UserInfoDTO;
+import com.easy.facade.beans.dto.UserSearchDTO;
 import com.easy.facade.beans.dto.UserUpdateDTO;
 import com.easy.facade.beans.entity.EmailActivationCodeMessage;
 import com.easy.facade.beans.model.User;
 import com.easy.facade.beans.model.UserInfo;
 import com.easy.facade.beans.model.UserRole;
+import com.easy.facade.beans.vo.UserInfoVO;
 import com.easy.facade.constant.RedisListenerTopicConsts;
 import com.easy.facade.dao.UserMapper;
 import com.easy.facade.enums.AccountStatusEnum;
@@ -36,13 +41,11 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private final UserInfoService userInfoService;
     private final UserRoleService userRoleService;
     private final RedisUtils redisUtils;
-    private final MailService mailService;
 
-    public UserService(UserInfoService userInfoService, UserRoleService userRoleService, RedisUtils redisUtils, MailService mailService) {
+    public UserService(UserInfoService userInfoService, UserRoleService userRoleService, RedisUtils redisUtils) {
         this.userInfoService = userInfoService;
         this.userRoleService = userRoleService;
         this.redisUtils = redisUtils;
-        this.mailService = mailService;
     }
 
     /**
@@ -130,5 +133,21 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     public void sendActivationCode(User user) {
         // 发送redis消息, 发送激活码邮件 @link EmailActivationCodeListener.class
         redisUtils.pushListenerMessage(RedisListenerTopicConsts.EMAIL_ACTIVATION_CODE_TOPIC, new EmailActivationCodeMessage(user.getId(), user.getUsername(), new String[]{user.getEmail()}));
+    }
+
+    public void addUserInfo(UserInfoDTO dto) {
+    }
+
+    public List<UserInfoVO> getUserList(UserSearchDTO dto) {
+        return getBaseMapper().getUserInfoList(dto);
+    }
+
+    public IPage<UserInfoVO> getUserPage(UserSearchDTO dto) {
+        Page<UserInfoVO> page = new Page<>();
+        page.setSize(dto.getSize());
+        page.setCurrent(dto.getCurrent());
+        page.setOptimizeCountSql(false);
+        page.setRecords(getBaseMapper().getUserInfoPage(page, dto));
+        return page;
     }
 }

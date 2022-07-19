@@ -118,4 +118,62 @@
         </set>
         WHERE u.id = #{dto.userId};
     </update>
+
+    <select id="getUserInfoList" resultMap="UserInfoVO">
+        SELECT u.id AS id,
+        u.user_key AS userKey,
+        u.username AS username,
+        u.phone AS phone,
+        u.email AS email,
+        u.`password` AS `password`,
+        u.register_time AS registerTime,
+        u.account_status AS accountStatus,
+        ui.nickname AS nickname,
+        u.remark AS remark
+        FROM easy_user u
+        left join easy_user_info ui on u.id = ui.user_id
+        <where>
+            <if test="dto.username != null and dto.username != ''">
+                u.username = #{dto.username}
+            </if>
+            <if test="dto.email != null and dto.email != ''">
+                AND u.email = #{dto.email}
+            </if>
+            <if test="dto.phone != null and dto.phone != ''">
+                AND u.phone = #{dto.phone}
+            </if>
+            <if test="dto.accountStatus != null">
+                AND U.account_status = #{dto.accountStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserInfoPage" resultMap="UserInfoVO">
+        SELECT u.id AS id,
+        u.user_key AS userKey,
+        u.username AS username,
+        u.phone AS phone,
+        u.email AS email,
+        u.`password` AS `password`,
+        u.register_time AS registerTime,
+        u.account_status AS accountStatus,
+        ui.nickname AS nickname,
+        u.remark AS remark
+        FROM easy_user u
+        left join easy_user_info ui on u.id = ui.user_id
+        <where>
+            <if test="dto.username != null and dto.username != ''">
+                u.username = #{dto.username}
+            </if>
+            <if test="dto.email != null and dto.email != ''">
+                AND u.email = #{dto.email}
+            </if>
+            <if test="dto.phone != null and dto.phone != ''">
+                AND u.phone = #{dto.phone}
+            </if>
+            <if test="dto.accountStatus != null">
+                AND U.account_status = #{dto.accountStatus}
+            </if>
+        </where>
+    </select>
 </mapper>

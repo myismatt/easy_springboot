@@ -1,6 +1,8 @@
 package com.easy.facade.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.easy.facade.beans.dto.UserSearchDTO;
 import com.easy.facade.beans.dto.UserUpdateDTO;
 import com.easy.facade.beans.model.User;
 import com.easy.facade.beans.vo.UserInfoVO;
@@ -49,4 +51,21 @@ public interface UserMapper extends BaseMapper<User> {
      * @param dto 入参
      */
     void updateUserInfoById(@Param("dto") UserUpdateDTO dto);
+
+    /**
+     * 获取用户信息列表
+     *
+     * @param dto 查询参数
+     * @return List<UserInfoVO>
+     */
+    List<UserInfoVO> getUserInfoList(@Param("dto") UserSearchDTO dto);
+
+    /**
+     * 分页查询用户信息
+     *
+     * @param page 分页信息
+     * @param dto  查询入参
+     * @return List<UserInfoVO>
+     */
+    List<UserInfoVO> getUserInfoPage(@Param("page") Page<UserInfoVO> page, @Param("dto") UserSearchDTO dto);
 }
